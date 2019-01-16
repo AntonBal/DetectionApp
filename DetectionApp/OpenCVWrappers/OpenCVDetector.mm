@@ -72,9 +72,6 @@ struct AreaCmp {
 - (Mat) makeHandMaskFor:(Mat&) img {
     
     Mat imgHLS;
-    Mat rangeMask;
-    Mat blurred;
-    Mat thresholded;
     cv::Size blurSize(10,10);
     
     cvtColor(img, imgHLS, COLOR_BGR2GRAY);
@@ -95,7 +92,7 @@ struct AreaCmp {
     Canny(src_gray, canny_output, value, value*2, 3);
     
     /// Find contours
-    findContours(canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+    findContours(canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
     
     return contours;
 }
