@@ -7,95 +7,120 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4F5A03A521A6FF640028D770 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5A03A421A6FF640028D770 /* AppDelegate.swift */; };
-		4F5A03A721A6FF640028D770 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F5A03A621A6FF640028D770 /* ViewController.swift */; };
-		4F5A03AA21A6FF640028D770 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F5A03A821A6FF640028D770 /* Main.storyboard */; };
-		4F5A03AC21A6FF650028D770 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F5A03AB21A6FF650028D770 /* Assets.xcassets */; };
-		4F5A03AF21A6FF650028D770 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F5A03AD21A6FF650028D770 /* LaunchScreen.storyboard */; };
-		4F5A040E21A711F40028D770 /* OpenCVDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F5A040D21A711F40028D770 /* OpenCVDetector.mm */; };
-		4F5A041021A712700028D770 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F5A040F21A712700028D770 /* opencv2.framework */; };
-		4F5A041321A713B40028D770 /* UIImage+OpenCV.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F5A041121A713B30028D770 /* UIImage+OpenCV.mm */; };
-		4F5A041921A721FB0028D770 /* haarcascade_frontalface_alt2.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F5A041721A721FA0028D770 /* haarcascade_frontalface_alt2.xml */; };
-		4F5A041A21A721FB0028D770 /* haarcascade_eye_tree_eyeglasses.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F5A041821A721FB0028D770 /* haarcascade_eye_tree_eyeglasses.xml */; };
+		608B481A21EF523A00D165CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608B481921EF523A00D165CB /* AppDelegate.swift */; };
+		608B481C21EF523A00D165CB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608B481B21EF523A00D165CB /* ViewController.swift */; };
+		608B481F21EF523A00D165CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 608B481D21EF523A00D165CB /* Main.storyboard */; };
+		608B482121EF523B00D165CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 608B482021EF523B00D165CB /* Assets.xcassets */; };
+		608B482421EF523B00D165CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 608B482221EF523B00D165CB /* LaunchScreen.storyboard */; };
+		608B483D21EF557600D165CB /* UIImage+OpenCV.mm in Sources */ = {isa = PBXBuildFile; fileRef = 608B483B21EF557600D165CB /* UIImage+OpenCV.mm */; };
+		608B484021EF55A500D165CB /* OpenCVDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 608B483E21EF55A500D165CB /* OpenCVDetector.mm */; };
+		F754A5A10375E61C0E869DE9 /* Pods_DetectionApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC8125D287D466B69D1E09CA /* Pods_DetectionApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4F5A03A121A6FF640028D770 /* DetectionApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DetectionApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		4F5A03A421A6FF640028D770 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		4F5A03A621A6FF640028D770 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		4F5A03A921A6FF640028D770 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		4F5A03AB21A6FF650028D770 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		4F5A03AE21A6FF650028D770 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		4F5A03B021A6FF650028D770 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4F5A040B21A711F30028D770 /* DetectionApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DetectionApp-Bridging-Header.h"; sourceTree = "<group>"; };
-		4F5A040C21A711F40028D770 /* OpenCVDetector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenCVDetector.h; sourceTree = "<group>"; };
-		4F5A040D21A711F40028D770 /* OpenCVDetector.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = OpenCVDetector.mm; sourceTree = "<group>"; };
-		4F5A040F21A712700028D770 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
-		4F5A041121A713B30028D770 /* UIImage+OpenCV.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+OpenCV.mm"; sourceTree = "<group>"; };
-		4F5A041221A713B30028D770 /* UIImage+OpenCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+OpenCV.h"; sourceTree = "<group>"; };
-		4F5A041721A721FA0028D770 /* haarcascade_frontalface_alt2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_frontalface_alt2.xml; sourceTree = "<group>"; };
-		4F5A041821A721FB0028D770 /* haarcascade_eye_tree_eyeglasses.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haarcascade_eye_tree_eyeglasses.xml; sourceTree = "<group>"; };
+		4AAC03BAE3450A0ECD6A6E94 /* Pods-DetectionApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DetectionApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DetectionApp/Pods-DetectionApp.debug.xcconfig"; sourceTree = "<group>"; };
+		608B481621EF523A00D165CB /* DetectionApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DetectionApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		608B481921EF523A00D165CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		608B481B21EF523A00D165CB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		608B481E21EF523A00D165CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		608B482021EF523B00D165CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		608B482321EF523B00D165CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		608B482521EF523B00D165CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		608B482E21EF527800D165CB /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		608B482F21EF530A00D165CB /* DetectionApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DetectionApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		608B483B21EF557600D165CB /* UIImage+OpenCV.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIImage+OpenCV.mm"; sourceTree = "<group>"; };
+		608B483C21EF557600D165CB /* UIImage+OpenCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+OpenCV.h"; sourceTree = "<group>"; };
+		608B483E21EF55A500D165CB /* OpenCVDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenCVDetector.mm; sourceTree = "<group>"; };
+		608B483F21EF55A500D165CB /* OpenCVDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenCVDetector.h; sourceTree = "<group>"; };
+		B41677230514792ADD42395E /* Pods-DetectionApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DetectionApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-DetectionApp/Pods-DetectionApp.release.xcconfig"; sourceTree = "<group>"; };
+		FC8125D287D466B69D1E09CA /* Pods_DetectionApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DetectionApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		4F5A039E21A6FF640028D770 /* Frameworks */ = {
+		608B481321EF523A00D165CB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F5A041021A712700028D770 /* opencv2.framework in Frameworks */,
+				F754A5A10375E61C0E869DE9 /* Pods_DetectionApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4F5A039821A6FF640028D770 = {
+		608B480D21EF523A00D165CB = {
 			isa = PBXGroup;
 			children = (
-				4F5A041821A721FB0028D770 /* haarcascade_eye_tree_eyeglasses.xml */,
-				4F5A041721A721FA0028D770 /* haarcascade_frontalface_alt2.xml */,
-				4F5A040C21A711F40028D770 /* OpenCVDetector.h */,
-				4F5A040D21A711F40028D770 /* OpenCVDetector.mm */,
-				4F5A041221A713B30028D770 /* UIImage+OpenCV.h */,
-				4F5A041121A713B30028D770 /* UIImage+OpenCV.mm */,
-				4F5A040F21A712700028D770 /* opencv2.framework */,
-				4F5A03A321A6FF640028D770 /* DetectionApp */,
-				4F5A03A221A6FF640028D770 /* Products */,
-				4F5A040B21A711F30028D770 /* DetectionApp-Bridging-Header.h */,
+				608B481821EF523A00D165CB /* DetectionApp */,
+				608B482B21EF526800D165CB /* Frameworks */,
+				608B481721EF523A00D165CB /* Products */,
+				7C52CE7EAC27A5A628EE0793 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
-		4F5A03A221A6FF640028D770 /* Products */ = {
+		608B481721EF523A00D165CB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4F5A03A121A6FF640028D770 /* DetectionApp.app */,
+				608B481621EF523A00D165CB /* DetectionApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4F5A03A321A6FF640028D770 /* DetectionApp */ = {
+		608B481821EF523A00D165CB /* DetectionApp */ = {
 			isa = PBXGroup;
 			children = (
-				4F5A03A421A6FF640028D770 /* AppDelegate.swift */,
-				4F5A03A621A6FF640028D770 /* ViewController.swift */,
-				4F5A03A821A6FF640028D770 /* Main.storyboard */,
-				4F5A03AB21A6FF650028D770 /* Assets.xcassets */,
-				4F5A03AD21A6FF650028D770 /* LaunchScreen.storyboard */,
-				4F5A03B021A6FF650028D770 /* Info.plist */,
+				608B482F21EF530A00D165CB /* DetectionApp-Bridging-Header.h */,
+				608B482E21EF527800D165CB /* PrefixHeader.pch */,
+				608B483921EF539800D165CB /* OpenCVWrappers */,
+				608B481921EF523A00D165CB /* AppDelegate.swift */,
+				608B481B21EF523A00D165CB /* ViewController.swift */,
+				608B481D21EF523A00D165CB /* Main.storyboard */,
+				608B482021EF523B00D165CB /* Assets.xcassets */,
+				608B482221EF523B00D165CB /* LaunchScreen.storyboard */,
+				608B482521EF523B00D165CB /* Info.plist */,
 			);
 			path = DetectionApp;
+			sourceTree = "<group>";
+		};
+		608B482B21EF526800D165CB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FC8125D287D466B69D1E09CA /* Pods_DetectionApp.framework */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		608B483921EF539800D165CB /* OpenCVWrappers */ = {
+			isa = PBXGroup;
+			children = (
+				608B483C21EF557600D165CB /* UIImage+OpenCV.h */,
+				608B483B21EF557600D165CB /* UIImage+OpenCV.mm */,
+				608B483F21EF55A500D165CB /* OpenCVDetector.h */,
+				608B483E21EF55A500D165CB /* OpenCVDetector.mm */,
+			);
+			path = OpenCVWrappers;
+			sourceTree = "<group>";
+		};
+		7C52CE7EAC27A5A628EE0793 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4AAC03BAE3450A0ECD6A6E94 /* Pods-DetectionApp.debug.xcconfig */,
+				B41677230514792ADD42395E /* Pods-DetectionApp.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4F5A03A021A6FF640028D770 /* DetectionApp */ = {
+		608B481521EF523A00D165CB /* DetectionApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4F5A03B321A6FF650028D770 /* Build configuration list for PBXNativeTarget "DetectionApp" */;
+			buildConfigurationList = 608B482821EF523B00D165CB /* Build configuration list for PBXNativeTarget "DetectionApp" */;
 			buildPhases = (
-				4F5A039D21A6FF640028D770 /* Sources */,
-				4F5A039E21A6FF640028D770 /* Frameworks */,
-				4F5A039F21A6FF640028D770 /* Resources */,
+				0FFBE26BAAF8132319CCE187 /* [CP] Check Pods Manifest.lock */,
+				608B481221EF523A00D165CB /* Sources */,
+				608B481321EF523A00D165CB /* Frameworks */,
+				608B481421EF523A00D165CB /* Resources */,
 			);
 			buildRules = (
 			);
@@ -103,26 +128,26 @@
 			);
 			name = DetectionApp;
 			productName = DetectionApp;
-			productReference = 4F5A03A121A6FF640028D770 /* DetectionApp.app */;
+			productReference = 608B481621EF523A00D165CB /* DetectionApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		4F5A039921A6FF640028D770 /* Project object */ = {
+		608B480E21EF523A00D165CB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1000;
-				LastUpgradeCheck = 1000;
-				ORGANIZATIONNAME = Cleveroad;
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "Anton Bal'";
 				TargetAttributes = {
-					4F5A03A021A6FF640028D770 = {
-						CreatedOnToolsVersion = 10.0;
-						LastSwiftMigration = 1000;
+					608B481521EF523A00D165CB = {
+						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1010;
 					};
 				};
 			};
-			buildConfigurationList = 4F5A039C21A6FF640028D770 /* Build configuration list for PBXProject "DetectionApp" */;
+			buildConfigurationList = 608B481121EF523A00D165CB /* Build configuration list for PBXProject "DetectionApp" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -130,58 +155,81 @@
 				en,
 				Base,
 			);
-			mainGroup = 4F5A039821A6FF640028D770;
-			productRefGroup = 4F5A03A221A6FF640028D770 /* Products */;
+			mainGroup = 608B480D21EF523A00D165CB;
+			productRefGroup = 608B481721EF523A00D165CB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4F5A03A021A6FF640028D770 /* DetectionApp */,
+				608B481521EF523A00D165CB /* DetectionApp */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		4F5A039F21A6FF640028D770 /* Resources */ = {
+		608B481421EF523A00D165CB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F5A041A21A721FB0028D770 /* haarcascade_eye_tree_eyeglasses.xml in Resources */,
-				4F5A03AF21A6FF650028D770 /* LaunchScreen.storyboard in Resources */,
-				4F5A03AC21A6FF650028D770 /* Assets.xcassets in Resources */,
-				4F5A041921A721FB0028D770 /* haarcascade_frontalface_alt2.xml in Resources */,
-				4F5A03AA21A6FF640028D770 /* Main.storyboard in Resources */,
+				608B482421EF523B00D165CB /* LaunchScreen.storyboard in Resources */,
+				608B482121EF523B00D165CB /* Assets.xcassets in Resources */,
+				608B481F21EF523A00D165CB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0FFBE26BAAF8132319CCE187 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DetectionApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		4F5A039D21A6FF640028D770 /* Sources */ = {
+		608B481221EF523A00D165CB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F5A041321A713B40028D770 /* UIImage+OpenCV.mm in Sources */,
-				4F5A03A721A6FF640028D770 /* ViewController.swift in Sources */,
-				4F5A03A521A6FF640028D770 /* AppDelegate.swift in Sources */,
-				4F5A040E21A711F40028D770 /* OpenCVDetector.mm in Sources */,
+				608B481C21EF523A00D165CB /* ViewController.swift in Sources */,
+				608B483D21EF557600D165CB /* UIImage+OpenCV.mm in Sources */,
+				608B484021EF55A500D165CB /* OpenCVDetector.mm in Sources */,
+				608B481A21EF523A00D165CB /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		4F5A03A821A6FF640028D770 /* Main.storyboard */ = {
+		608B481D21EF523A00D165CB /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4F5A03A921A6FF640028D770 /* Base */,
+				608B481E21EF523A00D165CB /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		4F5A03AD21A6FF650028D770 /* LaunchScreen.storyboard */ = {
+		608B482221EF523B00D165CB /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4F5A03AE21A6FF650028D770 /* Base */,
+				608B482321EF523B00D165CB /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -189,7 +237,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		4F5A03B121A6FF650028D770 /* Debug */ = {
+		608B482621EF523B00D165CB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -240,7 +288,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -250,7 +298,7 @@
 			};
 			name = Debug;
 		};
-		4F5A03B221A6FF650028D770 /* Release */ = {
+		608B482721EF523B00D165CB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -295,7 +343,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -305,50 +353,56 @@
 			};
 			name = Release;
 		};
-		4F5A03B421A6FF650028D770 /* Debug */ = {
+		608B482921EF523B00D165CB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4AAC03BAE3450A0ECD6A6E94 /* Pods-DetectionApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4Z2GMCTML2;
+				DEVELOPMENT_TEAM = 2PXK66RX4R;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
 				);
+				GCC_PREFIX_HEADER = "$(SRCROOT)/DetectionApp/PrefixHeader.pch";
 				INFOPLIST_FILE = DetectionApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cleveroad.DetectionAppCR;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Cleveroad.DetectionApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "DetectionApp-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "DetectionApp/DetectionApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		4F5A03B521A6FF650028D770 /* Release */ = {
+		608B482A21EF523B00D165CB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B41677230514792ADD42395E /* Pods-DetectionApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4Z2GMCTML2;
+				DEVELOPMENT_TEAM = 2PXK66RX4R;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Frameworks",
 				);
+				GCC_PREFIX_HEADER = "$(SRCROOT)/DetectionApp/PrefixHeader.pch";
 				INFOPLIST_FILE = DetectionApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = cleveroad.DetectionAppCR;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Cleveroad.DetectionApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "DetectionApp-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "DetectionApp/DetectionApp-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -357,25 +411,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4F5A039C21A6FF640028D770 /* Build configuration list for PBXProject "DetectionApp" */ = {
+		608B481121EF523A00D165CB /* Build configuration list for PBXProject "DetectionApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				4F5A03B121A6FF650028D770 /* Debug */,
-				4F5A03B221A6FF650028D770 /* Release */,
+				608B482621EF523B00D165CB /* Debug */,
+				608B482721EF523B00D165CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4F5A03B321A6FF650028D770 /* Build configuration list for PBXNativeTarget "DetectionApp" */ = {
+		608B482821EF523B00D165CB /* Build configuration list for PBXNativeTarget "DetectionApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				4F5A03B421A6FF650028D770 /* Debug */,
-				4F5A03B521A6FF650028D770 /* Release */,
+				608B482921EF523B00D165CB /* Debug */,
+				608B482A21EF523B00D165CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 4F5A039921A6FF640028D770 /* Project object */;
+	rootObject = 608B480E21EF523A00D165CB /* Project object */;
 }

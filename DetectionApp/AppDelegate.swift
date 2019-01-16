@@ -2,8 +2,8 @@
 //  AppDelegate.swift
 //  DetectionApp
 //
-//  Created by Anton Bal on 11/22/18.
-//  Copyright © 2018 Cleveroad. All rights reserved.
+//  Created by Anton Bal' on 1/16/19.
+//  Copyright © 2019 Anton Bal'. All rights reserved.
 //
 
 import UIKit
