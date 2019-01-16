@@ -17,7 +17,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         imageview.frame = view.bounds
         imageview.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        openCVWrapper = OpenCVDetector(cameraView: imageview, scale: 1.0)
+        openCVWrapper = OpenCVDetector(cameraView: imageview, scale: 0.8)
         openCVWrapper.startCapture()
         
         view.addSubview(imageview)
