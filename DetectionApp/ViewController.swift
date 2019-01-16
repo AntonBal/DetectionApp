@@ -13,7 +13,6 @@ class ViewController: UIViewController {
     let imageview = UIImageView()
     var openCVWrapper: OpenCVDetector!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         imageview.frame = view.bounds

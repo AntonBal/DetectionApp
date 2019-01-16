@@ -39,9 +39,9 @@ struct AreaCmp {
     
     if (self) {
         
-//        self.videoCamera = [[CvVideoCamera alloc] initWithParentView: view];
+        self.videoCamera = [[CvVideoCamera alloc] initWithParentView: view];
         self.videoCamera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionBack;
-        //self.videoCamera.defaultAVCaptureSessionPreset = AVCaptureSessionPreset640x480;
+        self.videoCamera.defaultAVCaptureSessionPreset = AVCaptureSessionPreset640x480;
         self.videoCamera.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
         self.videoCamera.defaultFPS = 30;
         self.videoCamera.grayscaleMode = NO;
@@ -158,11 +158,11 @@ struct AreaCmp {
 #pragma mark - Public
 
 - (void)startCapture {
-    
+    [self.videoCamera start];
 }
 
 - (void)stopCapture {
-    
+    [self.videoCamera stop];
 }
 
 @end
