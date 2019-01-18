@@ -14,6 +14,7 @@
 		608B482421EF523B00D165CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 608B482221EF523B00D165CB /* LaunchScreen.storyboard */; };
 		608B483D21EF557600D165CB /* UIImage+OpenCV.mm in Sources */ = {isa = PBXBuildFile; fileRef = 608B483B21EF557600D165CB /* UIImage+OpenCV.mm */; };
 		608B484021EF55A500D165CB /* OpenCVDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 608B483E21EF55A500D165CB /* OpenCVDetector.mm */; };
+		60B1321B21F0E5FA00F99AB8 /* BodyDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 60B1321A21F0E5FA00F99AB8 /* BodyDetector.mm */; };
 		F754A5A10375E61C0E869DE9 /* Pods_DetectionApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC8125D287D466B69D1E09CA /* Pods_DetectionApp.framework */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +33,8 @@
 		608B483C21EF557600D165CB /* UIImage+OpenCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+OpenCV.h"; sourceTree = "<group>"; };
 		608B483E21EF55A500D165CB /* OpenCVDetector.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenCVDetector.mm; sourceTree = "<group>"; };
 		608B483F21EF55A500D165CB /* OpenCVDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenCVDetector.h; sourceTree = "<group>"; };
+		60B1321921F0E5FA00F99AB8 /* BodyDetector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BodyDetector.h; sourceTree = "<group>"; };
+		60B1321A21F0E5FA00F99AB8 /* BodyDetector.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BodyDetector.mm; sourceTree = "<group>"; };
 		B41677230514792ADD42395E /* Pods-DetectionApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DetectionApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-DetectionApp/Pods-DetectionApp.release.xcconfig"; sourceTree = "<group>"; };
 		FC8125D287D466B69D1E09CA /* Pods_DetectionApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DetectionApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -95,6 +98,8 @@
 			children = (
 				608B483C21EF557600D165CB /* UIImage+OpenCV.h */,
 				608B483B21EF557600D165CB /* UIImage+OpenCV.mm */,
+				60B1321921F0E5FA00F99AB8 /* BodyDetector.h */,
+				60B1321A21F0E5FA00F99AB8 /* BodyDetector.mm */,
 				608B483F21EF55A500D165CB /* OpenCVDetector.h */,
 				608B483E21EF55A500D165CB /* OpenCVDetector.mm */,
 			);
@@ -210,6 +215,7 @@
 			files = (
 				608B481C21EF523A00D165CB /* ViewController.swift in Sources */,
 				608B483D21EF557600D165CB /* UIImage+OpenCV.mm in Sources */,
+				60B1321B21F0E5FA00F99AB8 /* BodyDetector.mm in Sources */,
 				608B484021EF55A500D165CB /* OpenCVDetector.mm in Sources */,
 				608B481A21EF523A00D165CB /* AppDelegate.swift in Sources */,
 			);

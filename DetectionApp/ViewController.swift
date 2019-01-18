@@ -10,17 +10,17 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    let imageview = UIImageView()
     var openCVWrapper: OpenCVDetector!
+    @IBOutlet weak var imageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        imageview.frame = view.bounds
-        imageview.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        openCVWrapper = OpenCVDetector(cameraView: imageview, scale: 0.8)
+        
+        openCVWrapper = OpenCVDetector(cameraView: imageView, scale: 1, type: .back)
         openCVWrapper.startCapture()
         
-        view.addSubview(imageview)
+//        let detector = BodyDetector()
+//        imageView.image = detector.detectAndDraw(imageView.image!)
     }
 }
 

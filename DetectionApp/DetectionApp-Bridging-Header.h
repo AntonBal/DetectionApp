@@ -3,3 +3,4 @@
 //
 
 #import "OpenCVDetector.h"
+#import "BodyDetector.h"

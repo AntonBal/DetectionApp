@@ -12,13 +12,13 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_OPTIONS(NSUInteger, OpenCVDetectorType) {
-    OpenCVDetectorTypeFace                 = 0,
-    OpenCVDetectorTypeHand                 = 1 << 0
+    OpenCVDetectorTypeFront                 = 1 << 0,
+    OpenCVDetectorTypeBack                  = 1 << 1
 };
 
 @interface OpenCVDetector : NSObject
 
-- (instancetype)initWithCameraView:(UIImageView *)view scale:(CGFloat)scale;
+- (instancetype)initWithCameraView:(UIImageView *)view scale:(CGFloat)scale type: (OpenCVDetectorType) type ;
 
 - (void)startCapture;
 - (void)stopCapture;
