@@ -16,7 +16,10 @@ typedef void (^CompletedBlock)(UIImage*);
 @interface BodyDetector: NSObject
 
 - (UIImage*) detectAndDrawImage:(UIImage*) img;
+
+#pragma mark - not ready
 - (void) detectAndDrawImage: (UIImage*) img completed: (CompletedBlock) block;
+#pragma mark -
 
 #ifdef __cplusplus
 - (cv::Mat) detectAndDraw:(cv::Mat) img scale:(CGFloat) scale;
