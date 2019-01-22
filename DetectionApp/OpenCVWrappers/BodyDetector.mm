@@ -14,7 +14,31 @@ using namespace std;
 
 typedef cv::Point CVPoint;
 
+@interface BodyDetector()
+{
+    CascadeClassifier bodyCascade;
+    vector<cv::Rect> objects;
+}
+
+
+@end
+
 @implementation BodyDetector
+
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"haarcascade_frontalface_alt.xml"
+                                                         ofType:nil];
+        std::string cascade_path = (char *)[path UTF8String];
+        if (!bodyCascade.load(cascade_path)) {
+            NSLog(@"Couldn't load haar cascade file.");
+        }
+    }
+    return self;
+}
 
 - (UIImage*) detectAndDraw:(UIImage*) img {
     Mat mat = [img cvMatRepresentationColor];
@@ -22,8 +46,52 @@ typedef cv::Point CVPoint;
 }
 
 - (cv::Mat)detectAndDraw:(cv::Mat)img scale:(CGFloat)scale {
-    Mat mask = [self makeHandMaskFor: img];
-    return [self contoursForImage: img mask: mask];
+  
+    Mat grayMat;
+    cvtColor(img, grayMat, CV_BGR2GRAY);
+   
+    objects.clear();
+    
+    bodyCascade.detectMultiScale(grayMat, objects);
+    
+    auto color = CV_RGB(255, 50, 50);
+    
+    if (objects.size() > 0) {
+        
+        const cv::Rect faceRectangle = objects[0];
+        rectangle(img, faceRectangle, color);
+        
+        auto y = faceRectangle.y + faceRectangle.height + faceRectangle.width / 2;
+        auto point1 = cvPoint(0, y);
+        auto point2 = cvPoint(INT_MAX, y);
+        
+        Mat drawing = [self contoursForImage:img mask:[self makeHandMaskFor:img]];
+        
+        bool found = false;
+        
+        line(img, point1, point2, color);
+        
+        LineIterator it(drawing, point1, point2, 8);
+        
+        //Try to find intersection of a contour and line
+        for(int nbPt = 0; nbPt < it.count; nbPt++, ++it) {
+            cv::Point pos = it.pos();
+            if (drawing.at<uchar>(pos) != 0) {
+                circle(img, pos, 8, color);
+                found = true;
+            }
+        }
+        
+        if (!found) { // If not found to calculate it
+            auto middleX = faceRectangle.x + faceRectangle.width / 2;
+            auto point1 = cvPoint(middleX - faceRectangle.height, y);
+            auto point2 = cvPoint(middleX + faceRectangle.height, y);
+            circle(img, point1, 8, color);
+            circle(img, point2, 8, color);
+        }
+    }
+    
+    return img;
 }
 
 #pragma mark - Private detection methods
@@ -33,15 +101,17 @@ typedef cv::Point CVPoint;
     Mat mask;
     cv::Size blurSize(3,3);
     
-    cvtColor(img, mask, COLOR_RGB2HSV);
+    cvtColor(img, mask, CV_RGB2GRAY);
     
-    auto low = Mat(mask.rows, mask.cols, mask.type(), CV_RGB(50, 50, 100));
+    /*
+    auto low = Mat(mask.rows, mask.cols, mask.type(), CV_RGB(50, 50, 90));
     auto high = Mat(mask.rows, mask.cols, mask.type(), CV_RGB(255, 255, 200));
-
     inRange(mask, low, high, mask);
+    */
+    
     blur(mask, mask, blurSize);
-//    threshold(mask, mask, 90, 255, THRESH_BINARY);
-    adaptiveThreshold(mask, mask, 200, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 15, 7);
+    threshold(mask, mask, 90, 255, THRESH_BINARY);
+//    adaptiveThreshold(mask, mask, 200, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 15, 7);
     
     return mask;
 }
@@ -58,13 +128,13 @@ typedef cv::Point CVPoint;
     /// Find contours
     findContours(mask, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
     
-    Scalar color = CV_RGB(50, 50, 150);
-    Scalar colorRed = CV_RGB(255, 0, 0);
+    Scalar colorRed = CV_RGB(50, 50, 255);
     int largest_area=0;
     int largest_contour_index=0;
     cv::Rect bounding_rect;
     
     if (contours.size() > 0) {
+        Mat drawing = Mat::zeros(img.size(), CV_8UC1);
         
         for( int i = 0; i< contours.size(); i++ ) // iterate through each contour.
         {
@@ -74,26 +144,27 @@ typedef cv::Point CVPoint;
                 largest_contour_index=i;                //Store the index of largest contour
                 bounding_rect= boundingRect(contours[i]); // Find the bounding rectangle for biggest contour
             }
-            drawContours(img, contours, i, color);
         }
         
         vector<CVPoint> points = contours[largest_contour_index];
+        drawContours(drawing, contours, largest_contour_index, colorRed);
         drawContours(img, contours, largest_contour_index, colorRed);
-        
-        auto extLeft = min_element(points.begin(), points.end(), ^(CVPoint lhs, CVPoint rhs) { return lhs.x < rhs.x; });
-        auto extRight = max_element(points.begin(), points.end(), ^(CVPoint lhs, CVPoint rhs) { return lhs.x < rhs.x; });
-        auto extTop = min_element(points.begin(), points.end(), ^(CVPoint lhs, CVPoint rhs) { return lhs.y < rhs.y; });
-        auto extBot = max_element(points.begin(), points.end(), ^(CVPoint lhs, CVPoint rhs) { return lhs.y < rhs.y; });
-      
-        int radius = 5;
-        
-        rectangle(img, bounding_rect, colorRed, 3);
-        circle(img, extLeft[0], radius, colorRed);
-        circle(img, extRight[1], radius, colorRed);
-        circle(img, extTop[0], radius, colorRed);
-        circle(img, extBot[1], radius, colorRed);
+    
+//        auto extLeft = min_element(points.begin(), points.end(), ^(CVPoint lhs, CVPoint rhs) { return lhs.x < rhs.x; });
+//        auto extRight = max_element(points.begin(), points.end(), ^(CVPoint lhs, CVPoint rhs) { return lhs.x < rhs.x; });
+//        auto extTop = min_element(points.begin(), points.end(), ^(CVPoint lhs, CVPoint rhs) { return lhs.y < rhs.y; });
+//        auto extBot = max_element(points.begin(), points.end(), ^(CVPoint lhs, CVPoint rhs) { return lhs.y < rhs.y; });
+//
+//        int radius = 5;
+//
+//        rectangle(img, bounding_rect, colorRed, 3);
+//        circle(img, extLeft[0], radius, colorRed);
+//        circle(img, extRight[1], radius, colorRed);
+//        circle(img, extTop[0], radius, colorRed);
+//        circle(img, extBot[1], radius, colorRed);
+        return drawing;
     }
     
-    return img;
+    return Mat();
 }
 @end

@@ -16,11 +16,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        openCVWrapper = OpenCVDetector(cameraView: imageView, scale: 1, type: .back)
-        openCVWrapper.startCapture()
+//        openCVWrapper = OpenCVDetector(cameraView: imageView, scale: 1, type: .back)
+//        openCVWrapper.startCapture()
         
-//        let detector = BodyDetector()
-//        imageView.image = detector.detectAndDraw(imageView.image!)
+        let detector = BodyDetector()
+        imageView.image = detector.detectAndDraw(imageView.image!)
     }
 }
 
