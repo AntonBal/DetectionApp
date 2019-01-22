@@ -40,7 +40,20 @@ typedef cv::Point CVPoint;
     return self;
 }
 
-- (UIImage*) detectAndDraw:(UIImage*) img {
+- (void) detectAndDrawImage:(UIImage *)img completed:(CompletedBlock)block {
+
+    dispatch_queue_global_t background = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+    
+    dispatch_async(background, ^{
+       
+        
+        
+        
+    });
+}
+
+
+- (UIImage*) detectAndDrawImage:(UIImage*) img {
     Mat mat = [img cvMatRepresentationColor];
     return [UIImage imageFromCVMat: [self detectAndDraw:mat scale: 1.0]];
 }
