@@ -8,18 +8,18 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "BodyObject.h"
+#import <CoreVideo/CoreVideo.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^CompletedBlock)(UIImage*);
+typedef void (^CompletedBlock)(BodyObject* __nullable);
 
 @interface BodyDetector: NSObject
 
 - (UIImage*) detectAndDrawImage:(UIImage*) img;
 
-#pragma mark - not ready
-- (void) detectAndDrawImage: (UIImage*) img completed: (CompletedBlock) block;
-#pragma mark -
+- (void) detectImageRef:(CVImageBufferRef)imageBuffer completed:(CompletedBlock)block;
 
 #ifdef __cplusplus
 - (cv::Mat) detectAndDraw:(cv::Mat) img scale:(CGFloat) scale;

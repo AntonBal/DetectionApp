@@ -16,8 +16,9 @@ typedef cv::Point CVPoint;
 
 @interface BodyDetector()
 {
-    CascadeClassifier bodyCascade;
     vector<cv::Rect> objects;
+    CascadeClassifier bodyCascade;
+    dispatch_queue_global_t background;
 }
 
 
@@ -36,53 +37,81 @@ typedef cv::Point CVPoint;
         if (!bodyCascade.load(cascade_path)) {
             NSLog(@"Couldn't load haar cascade file.");
         }
+        
+        background = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, DISPATCH_QUEUE_SERIAL);
     }
+    
     return self;
 }
 
-- (void) detectAndDrawImage:(UIImage *)img completed:(CompletedBlock)block {
-
-    dispatch_queue_global_t background = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+- (void) detectImageRef:(CVImageBufferRef)pixelBuffer scale:(NSInteger) scale completed:(CompletedBlock)block {
     
-    dispatch_async(background, ^{
-       
+    @autoreleasepool {
         
+        OSType format = CVPixelBufferGetPixelFormatType(pixelBuffer);
+        CGRect videoRect = CGRectMake(0.0f, 0.0f, CVPixelBufferGetWidth(pixelBuffer), CVPixelBufferGetHeight(pixelBuffer));
         
+        cv::Mat mat;
         
-    });
+        CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
+        
+        if (format == kCVPixelFormatType_420YpCbCr8BiPlanarFullRange) {
+            // For grayscale mode, the luminance channel of the YUV data is used
+            void *baseaddress = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
+            
+            mat = Mat(videoRect.size.height, videoRect.size.width, CV_8UC1, baseaddress, 0);
+        } else if (format == kCVPixelFormatType_32BGRA) {
+            // For color mode a 4-channel cv::Mat is created from the BGRA data
+            void *baseaddress = CVPixelBufferGetBaseAddress(pixelBuffer);
+            
+            mat = Mat(videoRect.size.height, videoRect.size.width, CV_8UC4, baseaddress, 0);
+        } else {
+            NSLog(@"Unsupported video format");
+            return;
+        }
+        
+        cv::resize(mat, mat, cvSize(videoRect.size.height / scale, videoRect.size.width / scale));
+        BodyObject* body = [self detecBodyForMat:mat];
+        
+        block(body);
+        
+        CVPixelBufferUnlockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
+    }
 }
-
 
 - (UIImage*) detectAndDrawImage:(UIImage*) img {
     Mat mat = [img cvMatRepresentationColor];
     return [UIImage imageFromCVMat: [self detectAndDraw:mat scale: 1.0]];
 }
 
-- (cv::Mat)detectAndDraw:(cv::Mat)img scale:(CGFloat)scale {
-  
-    Mat grayMat;
-    cvtColor(img, grayMat, CV_BGR2GRAY);
+- (BodyObject*)detecBodyForMat:(cv::Mat)img {
+    Mat grayMat = img;
+//    cvtColor(img, grayMat, CV_BGR2GRAY);
    
     objects.clear();
     
     bodyCascade.detectMultiScale(grayMat, objects);
     
-    auto color = CV_RGB(255, 50, 50);
+    BodyObject* body;
     
     if (objects.size() > 0) {
-        
+        body = [[BodyObject alloc] init];
         const cv::Rect faceRectangle = objects[0];
-        rectangle(img, faceRectangle, color);
-        
+
+        body.head = CGRectMake(faceRectangle.x, faceRectangle.y, faceRectangle.width, faceRectangle.height);
+//
+//        rectangle(img, faceRectangle, CV_RGB(255, 50, 50));
+//        UIImage* image = [UIImage imageFromCVMat: img];
         auto y = faceRectangle.y + faceRectangle.height + faceRectangle.width / 2;
         auto point1 = cvPoint(0, y);
         auto point2 = cvPoint(INT_MAX, y);
-        
+    
         Mat drawing = [self contoursForImage:img mask:[self makeHandMaskFor:img]];
         
         bool found = false;
         
-        line(img, point1, point2, color);
+        NSMutableArray* shoulders = [[NSMutableArray alloc] init];
+     //   line(img, point1, point2, color);
         
         LineIterator it(drawing, point1, point2, 8);
         
@@ -90,7 +119,7 @@ typedef cv::Point CVPoint;
         for(int nbPt = 0; nbPt < it.count; nbPt++, ++it) {
             cv::Point pos = it.pos();
             if (drawing.at<uchar>(pos) != 0) {
-                circle(img, pos, 8, color);
+                [shoulders addObject: [NSValue valueWithCGPoint: CGPointMake(pos.x, pos.y)]];
                 found = true;
             }
         }
@@ -99,9 +128,30 @@ typedef cv::Point CVPoint;
             auto middleX = faceRectangle.x + faceRectangle.width / 2;
             auto point1 = cvPoint(middleX - faceRectangle.height, y);
             auto point2 = cvPoint(middleX + faceRectangle.height, y);
-            circle(img, point1, 8, color);
-            circle(img, point2, 8, color);
+            [shoulders addObject: [NSValue valueWithCGPoint: CGPointMake(point1.x, point1.y)]];
+            [shoulders addObject: [NSValue valueWithCGPoint: CGPointMake(point2.x, point2.y)]];
         }
+        
+        body.shoulders = shoulders;
+    }
+    return body;
+}
+
+- (cv::Mat)detectAndDraw:(cv::Mat)img scale:(CGFloat)scale {
+    return [self drawBody: [self detecBodyForMat:img] toImage:img];
+}
+
+-(cv::Mat) drawBody: (BodyObject*) body toImage:(cv::Mat)img{
+    
+    auto color = CV_RGB(255, 50, 50);
+    auto head = cv::Rect(CGRectGetMinX(body.head), CGRectGetMinY(body.head), CGRectGetWidth(body.head), CGRectGetHeight(body.head));
+    
+    rectangle(img, head, color);
+    
+    for (NSUInteger i = 0; i < [body.shoulders count]; i++) {
+        CGPoint value = ((NSValue *)body.shoulders[i]).CGPointValue;
+        auto point = cvPoint(value.x, value.y);
+        circle(img, point, 8, color);
     }
     
     return img;
@@ -111,10 +161,10 @@ typedef cv::Point CVPoint;
 
 - (Mat) makeHandMaskFor:(Mat&) img {
     
-    Mat mask;
+    Mat mask = img;
     cv::Size blurSize(3,3);
     
-    cvtColor(img, mask, CV_RGB2GRAY);
+//    cvtColor(img, mask, CV_RGB2GRAY);
     
     /*
     auto low = Mat(mask.rows, mask.cols, mask.type(), CV_RGB(50, 50, 90));
