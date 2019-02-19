@@ -19,7 +19,7 @@ typedef void (^CompletedBlock)(BodyObject* __nullable);
 
 - (UIImage*) detectAndDrawImage:(UIImage*) img;
 
-- (void) detectImageRef:(CVImageBufferRef)imageBuffer completed:(CompletedBlock)block;
+- (void) detectImageRef:(CVImageBufferRef) pixelBuffer size:(CGSize) size scale:(NSInteger) scale completed:(CompletedBlock)block;
 
 #ifdef __cplusplus
 - (cv::Mat) detectAndDraw:(cv::Mat) img scale:(CGFloat) scale;

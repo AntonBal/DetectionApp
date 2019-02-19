@@ -44,13 +44,12 @@ typedef cv::Point CVPoint;
     return self;
 }
 
-- (void) detectImageRef:(CVImageBufferRef)pixelBuffer scale:(NSInteger) scale completed:(CompletedBlock)block {
+- (void) detectImageRef:(CVImageBufferRef) pixelBuffer size:(CGSize) size scale:(NSInteger) scale completed:(CompletedBlock)block {
     
     @autoreleasepool {
         
         OSType format = CVPixelBufferGetPixelFormatType(pixelBuffer);
         CGRect videoRect = CGRectMake(0.0f, 0.0f, CVPixelBufferGetWidth(pixelBuffer), CVPixelBufferGetHeight(pixelBuffer));
-        
         cv::Mat mat;
         
         CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
@@ -70,7 +69,7 @@ typedef cv::Point CVPoint;
             return;
         }
         
-        cv::resize(mat, mat, cvSize(videoRect.size.height / scale, videoRect.size.width / scale));
+        cv::resize(mat, mat, cvSize(size.height / scale, size.width / scale));
         BodyObject* body = [self detecBodyForMat:mat];
         
         block(body);
@@ -85,23 +84,27 @@ typedef cv::Point CVPoint;
 }
 
 - (BodyObject*)detecBodyForMat:(cv::Mat)img {
-    Mat grayMat = img;
 //    cvtColor(img, grayMat, CV_BGR2GRAY);
    
+    ///JUST PORTRAIT!!!!!!!!
+    
+    cv::rotate(img, img, cv::ROTATE_90_CLOCKWISE);
+    
     objects.clear();
     
-    bodyCascade.detectMultiScale(grayMat, objects);
+    bodyCascade.detectMultiScale(img, objects);
     
     BodyObject* body;
-    
     if (objects.size() > 0) {
         body = [[BodyObject alloc] init];
         const cv::Rect faceRectangle = objects[0];
 
         body.head = CGRectMake(faceRectangle.x, faceRectangle.y, faceRectangle.width, faceRectangle.height);
-//
+
 //        rectangle(img, faceRectangle, CV_RGB(255, 50, 50));
+//        auto size = img.size();
 //        UIImage* image = [UIImage imageFromCVMat: img];
+        
         auto y = faceRectangle.y + faceRectangle.height + faceRectangle.width / 2;
         auto point1 = cvPoint(0, y);
         auto point2 = cvPoint(INT_MAX, y);
