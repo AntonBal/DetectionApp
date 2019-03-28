@@ -21,18 +21,37 @@ typedef cv::Point CVPoint;
     dispatch_queue_global_t background;
 }
 
-
 @end
 
 @implementation BodyDetector
 
-
-- (instancetype)init
-{
+- (instancetype)initWithType:(BodyDetectorType)type {
     self = [super init];
+    
     if (self) {
-        NSString *path = [[NSBundle mainBundle] pathForResource:@"haarcascade_frontalface_alt.xml"
-                                                         ofType:nil];
+        
+        NSString* resource;
+        
+        switch (type) {
+            case BodyDetectorTypeUpperBody:
+                resource = @"haarcascade_upperbody.xml";
+                break;
+            case BodyDetectorTypeLowerBody:
+                resource = @"haarcascade_lowerbody.xml";
+                break;
+                
+            case BodyDetectorTypeFullBody:
+                resource = @"haarcascade_fullbody.xml";
+                break;
+                
+            case BodyDetectorTypeFace:
+                resource = @"haarcascade_frontalface_alt.xml";
+                break;
+            default:
+                break;
+        }
+        
+        NSString *path = [[NSBundle mainBundle] pathForResource:resource ofType:nil];
         std::string cascade_path = (char *)[path UTF8String];
         if (!bodyCascade.load(cascade_path)) {
             NSLog(@"Couldn't load haar cascade file.");
@@ -83,6 +102,22 @@ typedef cv::Point CVPoint;
     return [UIImage imageFromCVMat: [self detectAndDraw:mat scale: 1.0]];
 }
 
+- (cv::Mat) detect:(cv::Mat) image {
+    objects.clear();
+    
+    bodyCascade.detectMultiScale(image, objects);
+    
+    Mat detected;
+    
+    if (objects.size() > 0) {
+        const cv::Rect rect = objects[0];
+        rectangle(image, rect, CV_RGB(255, 0, 0));
+        detected = image(rect);
+    }
+    
+    return detected;
+}
+
 - (BodyObject*)detecBodyForMat:(cv::Mat)img {
 //    cvtColor(img, grayMat, CV_BGR2GRAY);
    
@@ -109,7 +144,7 @@ typedef cv::Point CVPoint;
         auto point1 = cvPoint(0, y);
         auto point2 = cvPoint(INT_MAX, y);
     
-        Mat drawing = [self contoursForImage:img mask:[self makeHandMaskFor:img]];
+        Mat drawing;// = [self contoursForImage:img mask:[self makeHandMaskFor:img]];
         
         bool found = false;
         
@@ -140,10 +175,6 @@ typedef cv::Point CVPoint;
     return body;
 }
 
-- (cv::Mat)detectAndDraw:(cv::Mat)img scale:(CGFloat)scale {
-    return [self drawBody: [self detecBodyForMat:img] toImage:img];
-}
-
 -(cv::Mat) drawBody: (BodyObject*) body toImage:(cv::Mat)img{
     
     auto color = CV_RGB(255, 50, 50);
@@ -167,70 +198,12 @@ typedef cv::Point CVPoint;
     Mat mask = img;
     cv::Size blurSize(3,3);
     
-//    cvtColor(img, mask, CV_RGB2GRAY);
-    
-    /*
-    auto low = Mat(mask.rows, mask.cols, mask.type(), CV_RGB(50, 50, 90));
-    auto high = Mat(mask.rows, mask.cols, mask.type(), CV_RGB(255, 255, 200));
-    inRange(mask, low, high, mask);
-    */
+    cvtColor(img, mask, CV_BGR2GRAY);
     
     blur(mask, mask, blurSize);
     threshold(mask, mask, 90, 255, THRESH_BINARY);
-//    adaptiveThreshold(mask, mask, 200, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 15, 7);
     
     return mask;
 }
 
-- (Mat) contoursForImage:(Mat) img mask:(Mat) mask {
-    
-    vector<vector<CVPoint>> contours;
-    vector<Vec4i> hierarchy;
-    
-    int value = 100;
-    /// Detect edges using canny
-    Canny(mask, mask, value, value*2, 3);
-    
-    /// Find contours
-    findContours(mask, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
-    
-    Scalar colorRed = CV_RGB(50, 50, 255);
-    int largest_area=0;
-    int largest_contour_index=0;
-    cv::Rect bounding_rect;
-    
-    if (contours.size() > 0) {
-        Mat drawing = Mat::zeros(img.size(), CV_8UC1);
-        
-        for( int i = 0; i< contours.size(); i++ ) // iterate through each contour.
-        {
-            double a=contourArea( contours[i],false);  //  Find the area of contour
-            if(a>largest_area){
-                largest_area=a;
-                largest_contour_index=i;                //Store the index of largest contour
-                bounding_rect= boundingRect(contours[i]); // Find the bounding rectangle for biggest contour
-            }
-        }
-        
-        vector<CVPoint> points = contours[largest_contour_index];
-        drawContours(drawing, contours, largest_contour_index, colorRed);
-        drawContours(img, contours, largest_contour_index, colorRed);
-    
-//        auto extLeft = min_element(points.begin(), points.end(), ^(CVPoint lhs, CVPoint rhs) { return lhs.x < rhs.x; });
-//        auto extRight = max_element(points.begin(), points.end(), ^(CVPoint lhs, CVPoint rhs) { return lhs.x < rhs.x; });
-//        auto extTop = min_element(points.begin(), points.end(), ^(CVPoint lhs, CVPoint rhs) { return lhs.y < rhs.y; });
-//        auto extBot = max_element(points.begin(), points.end(), ^(CVPoint lhs, CVPoint rhs) { return lhs.y < rhs.y; });
-//
-//        int radius = 5;
-//
-//        rectangle(img, bounding_rect, colorRed, 3);
-//        circle(img, extLeft[0], radius, colorRed);
-//        circle(img, extRight[1], radius, colorRed);
-//        circle(img, extTop[0], radius, colorRed);
-//        circle(img, extBot[1], radius, colorRed);
-        return drawing;
-    }
-    
-    return Mat();
-}
 @end

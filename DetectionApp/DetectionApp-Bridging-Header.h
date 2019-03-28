@@ -4,3 +4,4 @@
 
 #import "OpenCVDetector.h"
 #import "BodyDetector.h"
+#import "UIImage+Color.h"

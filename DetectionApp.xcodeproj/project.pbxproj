@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C1BA91E2241068900183C77 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1BA91D2241068900183C77 /* CameraViewController.swift */; };
+		2C65C11C2243EFEF00E290B5 /* UIImage+Color.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C65C11B2243EFEF00E290B5 /* UIImage+Color.m */; };
+		2C6A34F2224CD21900E53B8F /* TShirtDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2C6A34F1224CD21900E53B8F /* TShirtDetector.mm */; };
 		6044086C2214223500099F92 /* BodyObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6044086B2214223500099F92 /* BodyObject.m */; };
 		6044086D22145E7600099F92 /* Pods_DetectionApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC8125D287D466B69D1E09CA /* Pods_DetectionApp.framework */; };
 		60717F2021F72FC500B9B3FE /* haarcascade_lefteye_2splits.xml in Resources */ = {isa = PBXBuildFile; fileRef = 60717F0F21F72FC400B9B3FE /* haarcascade_lefteye_2splits.xml */; };
@@ -37,6 +40,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2C1BA91D2241068900183C77 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		2C65C11A2243EFEF00E290B5 /* UIImage+Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Color.h"; sourceTree = "<group>"; };
+		2C65C11B2243EFEF00E290B5 /* UIImage+Color.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Color.m"; sourceTree = "<group>"; };
+		2C6A34F0224CD21900E53B8F /* TShirtDetector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TShirtDetector.h; sourceTree = "<group>"; };
+		2C6A34F1224CD21900E53B8F /* TShirtDetector.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TShirtDetector.mm; sourceTree = "<group>"; };
 		4AAC03BAE3450A0ECD6A6E94 /* Pods-DetectionApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DetectionApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DetectionApp/Pods-DetectionApp.debug.xcconfig"; sourceTree = "<group>"; };
 		6044086A2214223500099F92 /* BodyObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BodyObject.h; sourceTree = "<group>"; };
 		6044086B2214223500099F92 /* BodyObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BodyObject.m; sourceTree = "<group>"; };
@@ -138,6 +146,7 @@
 				608B483921EF539800D165CB /* OpenCVWrappers */,
 				608B481921EF523A00D165CB /* AppDelegate.swift */,
 				608B481B21EF523A00D165CB /* ViewController.swift */,
+				2C1BA91D2241068900183C77 /* CameraViewController.swift */,
 				608B481D21EF523A00D165CB /* Main.storyboard */,
 				608B482021EF523B00D165CB /* Assets.xcassets */,
 				608B482221EF523B00D165CB /* LaunchScreen.storyboard */,
@@ -160,10 +169,14 @@
 				60717EF921F7227800B9B3FE /* Haarcascades */,
 				608B483C21EF557600D165CB /* UIImage+OpenCV.h */,
 				608B483B21EF557600D165CB /* UIImage+OpenCV.mm */,
+				2C65C11A2243EFEF00E290B5 /* UIImage+Color.h */,
+				2C65C11B2243EFEF00E290B5 /* UIImage+Color.m */,
 				6044086A2214223500099F92 /* BodyObject.h */,
 				6044086B2214223500099F92 /* BodyObject.m */,
 				60B1321921F0E5FA00F99AB8 /* BodyDetector.h */,
 				60B1321A21F0E5FA00F99AB8 /* BodyDetector.mm */,
+				2C6A34F0224CD21900E53B8F /* TShirtDetector.h */,
+				2C6A34F1224CD21900E53B8F /* TShirtDetector.mm */,
 				608B483F21EF55A500D165CB /* OpenCVDetector.h */,
 				608B483E21EF55A500D165CB /* OpenCVDetector.mm */,
 			);
@@ -270,15 +283,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-DetectionApp-checkManifestLockResult.txt",
 			);
@@ -298,6 +307,9 @@
 				608B483D21EF557600D165CB /* UIImage+OpenCV.mm in Sources */,
 				60B1321B21F0E5FA00F99AB8 /* BodyDetector.mm in Sources */,
 				608B484021EF55A500D165CB /* OpenCVDetector.mm in Sources */,
+				2C6A34F2224CD21900E53B8F /* TShirtDetector.mm in Sources */,
+				2C1BA91E2241068900183C77 /* CameraViewController.swift in Sources */,
+				2C65C11C2243EFEF00E290B5 /* UIImage+Color.m in Sources */,
 				6044086C2214223500099F92 /* BodyObject.m in Sources */,
 				608B481A21EF523A00D165CB /* AppDelegate.swift in Sources */,
 			);
@@ -448,6 +460,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2PXK66RX4R;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = NO;
@@ -464,6 +477,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.Cleveroad.DetectionApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "DetectionApp/DetectionApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
@@ -478,6 +492,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2PXK66RX4R;
 				EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE = NO;
@@ -494,6 +509,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.Cleveroad.DetectionApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "DetectionApp/DetectionApp-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -510,7 +526,7 @@
 				608B482721EF523B00D165CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		608B482821EF523B00D165CB /* Build configuration list for PBXNativeTarget "DetectionApp" */ = {
 			isa = XCConfigurationList;
@@ -519,7 +535,7 @@
 				608B482A21EF523B00D165CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
