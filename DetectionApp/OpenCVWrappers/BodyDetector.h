@@ -31,6 +31,7 @@ typedef void (^CompletedBlock)(BodyObject* __nullable);
 - (void) detectImageRef:(CVImageBufferRef) pixelBuffer size:(CGSize) size scale:(NSInteger) scale completed:(CompletedBlock)block;
 
 #ifdef __cplusplus
+- (BodyObject*)detecBodyForMat:(cv::Mat)img; //JUST FOR BodyDetectorTypeFace
 - (cv::Mat) detect:(cv::Mat) image;
 - (cv::Mat) detectAndDraw:(cv::Mat) img scale:(CGFloat) scale;
 #endif

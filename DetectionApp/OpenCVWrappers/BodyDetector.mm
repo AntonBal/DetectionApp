@@ -111,7 +111,7 @@ typedef cv::Point CVPoint;
     
     if (objects.size() > 0) {
         const cv::Rect rect = objects[0];
-        rectangle(image, rect, CV_RGB(255, 0, 0));
+//        rectangle(image, rect, CV_RGB(255, 0, 0));
         detected = image(rect);
     }
     
@@ -123,7 +123,7 @@ typedef cv::Point CVPoint;
    
     ///JUST PORTRAIT!!!!!!!!
     
-    cv::rotate(img, img, cv::ROTATE_90_CLOCKWISE);
+   // cv::rotate(img, img, cv::ROTATE_90_CLOCKWISE);
     
     objects.clear();
     
@@ -136,7 +136,7 @@ typedef cv::Point CVPoint;
 
         body.head = CGRectMake(faceRectangle.x, faceRectangle.y, faceRectangle.width, faceRectangle.height);
 
-//        rectangle(img, faceRectangle, CV_RGB(255, 50, 50));
+        rectangle(img, faceRectangle, CV_RGB(255, 50, 50));
 //        auto size = img.size();
 //        UIImage* image = [UIImage imageFromCVMat: img];
         
@@ -163,9 +163,10 @@ typedef cv::Point CVPoint;
         }
         
         if (!found) { // If not found to calculate it
+            y = MIN(y, img.rows);
             auto middleX = faceRectangle.x + faceRectangle.width / 2;
-            auto point1 = cvPoint(middleX - faceRectangle.height, y);
-            auto point2 = cvPoint(middleX + faceRectangle.height, y);
+            auto point1 = cvPoint(MAX(middleX - faceRectangle.height, 0), y);
+            auto point2 = cvPoint(MIN(middleX + faceRectangle.height, img.cols), y);
             [shoulders addObject: [NSValue valueWithCGPoint: CGPointMake(point1.x, point1.y)]];
             [shoulders addObject: [NSValue valueWithCGPoint: CGPointMake(point2.x, point2.y)]];
         }

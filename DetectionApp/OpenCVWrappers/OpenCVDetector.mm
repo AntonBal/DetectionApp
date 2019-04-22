@@ -51,9 +51,9 @@ using namespace std;
             self.videoCamera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionBack;
         }
         
-        self.bodyDetector = [[BodyDetector alloc] initWithType: BodyDetectorTypeUpperBody];
+        self.bodyDetector = [[BodyDetector alloc] initWithType: BodyDetectorTypeFace];
         self.tshirtDetector = [[TShirtDetector alloc] init];
-        self.fillingScalar = Scalar(255, 0, 255);
+        self.fillingScalar = Scalar(NAN, NAN, NAN);
         self.selectingScalar = Scalar(NAN, NAN, NAN);
     }
     
@@ -64,24 +64,43 @@ using namespace std;
 
 - (void)processImage:(cv::Mat&)image {
     
-    //Try to detect tshirtColor automatic, once
-    if (isnan(self.selectingScalar[0])) {
-        Mat upperBody = [self.bodyDetector detect:image];
+    auto bodyObject = [self.bodyDetector detecBodyForMat: image];
+    
+    cv::Rect bodyRect = cvRect(0, 0, image.cols, image.rows);
+    Mat bodyMat = image;
+    
+    if (bodyObject != nil) {
         
-        if (upperBody.rows > 0 && upperBody.cols > 0) {
-            int rows = upperBody.rows;
-            int cols = upperBody.cols;
-            self.selectingScalar = [self averageScalarForImage:upperBody inPoint: CGPointMake(cols/2 - 3, rows - 3)];
+        CGFloat y = CGRectGetMaxY([bodyObject head]);
+        CGFloat height = image.rows;
+        
+        if (height > y) {
+            height -= y;
+        } else {
+            y = 0;
+        }
+        
+        bodyRect = cvRect(0, y, image.cols, height);
+        bodyMat = image(bodyRect);
+        
+        //Try to detect tshirtColor automatic, once
+        if (isnan(self.selectingScalar[0])) {
+            if (bodyMat.cols > 0 && bodyMat.rows > 0) {
+                int rows = bodyMat.rows;
+                int cols = bodyMat.cols;
+                self.selectingScalar = [self averageScalarForImage:bodyMat inPoint: CGPointMake(cols/2 - 7, rows - 7)];
+            }
         }
     }
-   
+    
     if (self.selectedPointDidChanged) {
         self.selectingScalar = [self averageScalarForImage:image inPoint: self.selectedPoint];
         self.selectedPointDidChanged = false;
     }
     
-    if (!isnan(self.selectingScalar[0])) {
-        image = [self.tshirtDetector fillImg:image withColor: [self fillingScalar] byColor: [self selectingScalar]];
+    if (!isnan(self.selectingScalar[0]) && !isnan(self.fillingScalar[0])) {
+        image = [self.tshirtDetector fillImg: bodyMat withColor:[self fillingScalar] byColor:[self selectingScalar]];
+       // bodyMat.copyTo(image(bodyRect));
     }
 }
 
@@ -96,9 +115,9 @@ using namespace std;
     cvtColor(image, hsv, CV_BGRA2BGR);
     cvtColor(hsv, hsv, CV_BGR2HSV);
     
-    Mat rect = hsv(cvRect(x - 1, y - 1, 3, 3));
+    Mat rect = hsv(cvRect(x - 3, y - 3, 6, 6));
     
-    Scalar hsvColors[9];
+    Scalar hsvColors[rect.rows];
     
     for (int i = 0; i < rect.rows; i++) {
         for (int j = 0; j < rect.cols; j++) {
@@ -137,6 +156,10 @@ using namespace std;
 
 - (void)setFillingColorWithRed:(double) red green:(double) green blue:(double) blue {
     self.fillingScalar = Scalar(blue, green, red);
+}
+
+- (void) resetFillingColor {
+    self.fillingScalar = Scalar(NAN, NAN, NAN);
 }
 
 @end

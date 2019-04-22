@@ -27,6 +27,7 @@ typedef NS_OPTIONS(NSUInteger, OpenCVDetectorType) {
 - (void)stopCapture;
 - (void)setDetectingPoint: (CGPoint) point;
 - (void)setFillingColorWithRed:(double) red green:(double) green blue:(double) blue;
+- (void)resetFillingColor;
 
 @end
 

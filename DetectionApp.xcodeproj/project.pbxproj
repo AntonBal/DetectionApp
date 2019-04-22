@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2C1BA91E2241068900183C77 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C1BA91D2241068900183C77 /* CameraViewController.swift */; };
+		2C5E10C7225B84690088FC4A /* ColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5E10C6225B84690088FC4A /* ColorCollectionViewCell.swift */; };
+		2C5E10C9225B97640088FC4A /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5E10C8225B97640088FC4A /* ImageCollectionViewCell.swift */; };
 		2C65C11C2243EFEF00E290B5 /* UIImage+Color.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C65C11B2243EFEF00E290B5 /* UIImage+Color.m */; };
 		2C6A34F2224CD21900E53B8F /* TShirtDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2C6A34F1224CD21900E53B8F /* TShirtDetector.mm */; };
 		6044086C2214223500099F92 /* BodyObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6044086B2214223500099F92 /* BodyObject.m */; };
@@ -32,7 +34,7 @@
 		608B481A21EF523A00D165CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608B481921EF523A00D165CB /* AppDelegate.swift */; };
 		608B481C21EF523A00D165CB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608B481B21EF523A00D165CB /* ViewController.swift */; };
 		608B481F21EF523A00D165CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 608B481D21EF523A00D165CB /* Main.storyboard */; };
-		608B482121EF523B00D165CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 608B482021EF523B00D165CB /* Assets.xcassets */; };
+		608B482121EF523B00D165CB /* TSHIRT.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 608B482021EF523B00D165CB /* TSHIRT.xcassets */; };
 		608B482421EF523B00D165CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 608B482221EF523B00D165CB /* LaunchScreen.storyboard */; };
 		608B483D21EF557600D165CB /* UIImage+OpenCV.mm in Sources */ = {isa = PBXBuildFile; fileRef = 608B483B21EF557600D165CB /* UIImage+OpenCV.mm */; };
 		608B484021EF55A500D165CB /* OpenCVDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 608B483E21EF55A500D165CB /* OpenCVDetector.mm */; };
@@ -41,6 +43,8 @@
 
 /* Begin PBXFileReference section */
 		2C1BA91D2241068900183C77 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		2C5E10C6225B84690088FC4A /* ColorCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionViewCell.swift; sourceTree = "<group>"; };
+		2C5E10C8225B97640088FC4A /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		2C65C11A2243EFEF00E290B5 /* UIImage+Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Color.h"; sourceTree = "<group>"; };
 		2C65C11B2243EFEF00E290B5 /* UIImage+Color.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Color.m"; sourceTree = "<group>"; };
 		2C6A34F0224CD21900E53B8F /* TShirtDetector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TShirtDetector.h; sourceTree = "<group>"; };
@@ -69,7 +73,7 @@
 		608B481921EF523A00D165CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		608B481B21EF523A00D165CB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		608B481E21EF523A00D165CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		608B482021EF523B00D165CB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		608B482021EF523B00D165CB /* TSHIRT.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TSHIRT.xcassets; sourceTree = "<group>"; };
 		608B482321EF523B00D165CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		608B482521EF523B00D165CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		608B482E21EF527800D165CB /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
@@ -96,6 +100,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C5E10C5225B84420088FC4A /* CollectioViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				2C5E10C6225B84690088FC4A /* ColorCollectionViewCell.swift */,
+				2C5E10C8225B97640088FC4A /* ImageCollectionViewCell.swift */,
+			);
+			path = CollectioViewCells;
+			sourceTree = "<group>";
+		};
 		60717EF921F7227800B9B3FE /* Haarcascades */ = {
 			isa = PBXGroup;
 			children = (
@@ -145,10 +158,11 @@
 				608B482E21EF527800D165CB /* PrefixHeader.pch */,
 				608B483921EF539800D165CB /* OpenCVWrappers */,
 				608B481921EF523A00D165CB /* AppDelegate.swift */,
+				2C5E10C5225B84420088FC4A /* CollectioViewCells */,
 				608B481B21EF523A00D165CB /* ViewController.swift */,
 				2C1BA91D2241068900183C77 /* CameraViewController.swift */,
 				608B481D21EF523A00D165CB /* Main.storyboard */,
-				608B482021EF523B00D165CB /* Assets.xcassets */,
+				608B482021EF523B00D165CB /* TSHIRT.xcassets */,
 				608B482221EF523B00D165CB /* LaunchScreen.storyboard */,
 				608B482521EF523B00D165CB /* Info.plist */,
 			);
@@ -265,7 +279,7 @@
 				60717F2E21F72FC500B9B3FE /* haarcascade_frontalcatface.xml in Resources */,
 				60717F2721F72FC500B9B3FE /* haarcascade_russian_plate_number.xml in Resources */,
 				60717F2221F72FC500B9B3FE /* haarcascade_licence_plate_rus_16stages.xml in Resources */,
-				608B482121EF523B00D165CB /* Assets.xcassets in Resources */,
+				608B482121EF523B00D165CB /* TSHIRT.xcassets in Resources */,
 				60717F2F21F72FC500B9B3FE /* haarcascade_upperbody.xml in Resources */,
 				608B481F21EF523A00D165CB /* Main.storyboard in Resources */,
 				60717F2021F72FC500B9B3FE /* haarcascade_lefteye_2splits.xml in Resources */,
@@ -303,6 +317,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C5E10C7225B84690088FC4A /* ColorCollectionViewCell.swift in Sources */,
+				2C5E10C9225B97640088FC4A /* ImageCollectionViewCell.swift in Sources */,
 				608B481C21EF523A00D165CB /* ViewController.swift in Sources */,
 				608B483D21EF557600D165CB /* UIImage+OpenCV.mm in Sources */,
 				60B1321B21F0E5FA00F99AB8 /* BodyDetector.mm in Sources */,
