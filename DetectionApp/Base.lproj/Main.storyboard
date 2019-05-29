@@ -20,37 +20,35 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aAV-0z-Kyz">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="h58-LG-sp4">
+                                        <rect key="frame" x="0.0" y="517" width="375" height="150"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="150" id="dmm-vo-Uqf"/>
+                                        </constraints>
+                                    </tableView>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="D1k-bV-bxV">
-                                <rect key="frame" x="0.0" y="517" width="375" height="150"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="150" id="A6r-CD-jdW"/>
+                                    <constraint firstAttribute="trailing" secondItem="h58-LG-sp4" secondAttribute="trailing" id="LIP-ob-g8c"/>
+                                    <constraint firstAttribute="bottom" secondItem="h58-LG-sp4" secondAttribute="bottom" id="ZXC-ri-Wb7"/>
+                                    <constraint firstItem="h58-LG-sp4" firstAttribute="leading" secondItem="aAV-0z-Kyz" secondAttribute="leading" id="f04-hg-DOo"/>
                                 </constraints>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="8oM-g7-vbU">
-                                    <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="10" minY="20" maxX="10" maxY="0.0"/>
-                                </collectionViewFlowLayout>
-                                <cells/>
-                            </collectionView>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="D1k-bV-bxV" firstAttribute="leading" secondItem="QQD-iM-Fld" secondAttribute="leading" id="8jj-3k-tWC"/>
                             <constraint firstItem="aAV-0z-Kyz" firstAttribute="leading" secondItem="QQD-iM-Fld" secondAttribute="leading" id="G1R-3J-EHp"/>
                             <constraint firstItem="QQD-iM-Fld" firstAttribute="trailing" secondItem="aAV-0z-Kyz" secondAttribute="trailing" id="IkT-0v-XtK"/>
                             <constraint firstAttribute="bottom" secondItem="aAV-0z-Kyz" secondAttribute="bottom" id="RN4-K8-v09"/>
-                            <constraint firstItem="D1k-bV-bxV" firstAttribute="trailing" secondItem="QQD-iM-Fld" secondAttribute="trailing" id="oy7-BK-f8i"/>
                             <constraint firstItem="aAV-0z-Kyz" firstAttribute="top" secondItem="BS3-Rq-boC" secondAttribute="top" id="x3q-7G-skc"/>
-                            <constraint firstItem="D1k-bV-bxV" firstAttribute="bottom" secondItem="QQD-iM-Fld" secondAttribute="bottom" id="yUj-da-10M"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="QQD-iM-Fld"/>
                     </view>
                     <connections>
                         <outlet property="cameraView" destination="aAV-0z-Kyz" id="p0V-LO-Hql"/>
-                        <outlet property="coloredCollectionView" destination="D1k-bV-bxV" id="3kK-dV-6aF"/>
+                        <outlet property="tableView" destination="h58-LG-sp4" id="chS-gU-vfx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r94-5x-v5F" userLabel="First Responder" sceneMemberID="firstResponder"/>
