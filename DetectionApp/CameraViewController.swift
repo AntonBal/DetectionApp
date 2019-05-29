@@ -11,7 +11,7 @@ import AVFoundation
 
 class CameraViewController: UIViewController {
    
-    lazy var detecor = OpenCVDetector(cameraView: cameraView, scale: 1, preset: .vga640x480, type: .front)
+    lazy var detecor = OpenCVDetector(cameraView: cameraView, scale: 1, preset: .vga640x480, type: .back)
     
     lazy var models: [ModelCell] = {
         
@@ -24,7 +24,7 @@ class CameraViewController: UIViewController {
         let imageModel = ModelCell(cellClass: ImageCollectionViewCell.self, identifier: ImageCollectionViewCellIdentifier, items: images,
                                    configuration: { (cell, indexPath) in (cell as! ImageCollectionViewCell).image = images[indexPath.row]
         }) { (indexPath) in
-            
+            self.detecor.setImage(images[indexPath.row])
         }
         
         let colorModel = ModelCell(cellClass: ColorCollectionViewCell.self, identifier: ColorCollectionViewCellIdentifier, items: images,
@@ -119,7 +119,7 @@ extension CameraViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if let cell = cell as? CollectionTableViewCell {
             cell.bind(cell: models[indexPath.row])
-            cell.collectionView.allowsMultipleSelection = true
+            cell.collectionView.allowsMultipleSelection = false
             cell.collectionView.contentInset = .zero
             cell.collectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .left)
         }

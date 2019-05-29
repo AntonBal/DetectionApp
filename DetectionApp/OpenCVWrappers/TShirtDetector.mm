@@ -32,7 +32,6 @@ using namespace std;
     Mat hsv;
     
     //Converting image from BGR to HSV color space.
-    cvtColor(img, img, COLOR_BGRA2BGR);
     cvtColor(img, hsv, COLOR_BGR2HSV);
     
     Mat mask1, mask2;
@@ -57,11 +56,12 @@ using namespace std;
     auto h = hlsColor.h;
     auto s = hlsColor.s;
     auto v = hlsColor.v;
-    auto hMin = h - 10;
-    auto hMax = h + 10;
     
+    auto hValue = 2;
     auto svValue = 40;
     
+    auto hMin = h - hValue;
+    auto hMax = h + hValue;
     auto sMin = s - svValue;
     auto sMax = s + svValue;
     auto vMin = v - svValue;
@@ -87,8 +87,8 @@ using namespace std;
     hMin = MIN(hMin, hMax);
     hMax = MAX(temp, hMax);
     
-    inRange(hsv, Scalar(hMin, sMin, vMin), Scalar(hMin + 10, MIN(sMax + 20, 255), MIN(vMax + 20, 255)), mask1);
-    inRange(hsv, Scalar(hMax, sMin, vMin), Scalar(hMax + 10, MIN(sMax + 20, 255), MIN(vMax + 20, 255)), mask2);
+    inRange(hsv, Scalar(hMin, sMin, vMin), Scalar(hMin + hValue, MIN(sMax + 20, 255), MIN(vMax + 20, 255)), mask1);
+    inRange(hsv, Scalar(hMax, sMin, vMin), Scalar(hMax + hValue, MIN(sMax + 20, 255), MIN(vMax + 20, 255)), mask2);
     
     // Generating the final mask
     mask1 = mask1 + mask2;
@@ -98,8 +98,6 @@ using namespace std;
     threshold(mask1, mask1, 50, 255, THRESH_BINARY);
     
     img = [self fillBigContourForImage:img mask: mask1 color: fillingColor];
-
-    cvtColor(img, img, COLOR_BGR2RGB);
     
     return img;
     /*

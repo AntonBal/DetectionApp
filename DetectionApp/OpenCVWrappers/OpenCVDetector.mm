@@ -26,6 +26,7 @@ using namespace std;
 @property (nonatomic, assign) Scalar fillingScalar;
 @property (nonatomic, assign) bool selectedPointDidChanged;
 @property (nonatomic, assign) CGPoint selectedPoint;
+@property (nonatomic, assign) Mat additionalImage;
 
 @end
 
@@ -64,14 +65,77 @@ using namespace std;
 
 - (void)processImage:(cv::Mat&)image {
     
+    auto bodyObject = [self.bodyDetector detecBodyForMat: image];
+    
+    cv::Rect fullBodyRect = cvRect(0, 0, image.cols, image.rows);
+    Mat bodyMat = image;
+    
+    if (bodyObject != nil) {
+        
+        CGFloat y = CGRectGetMaxY([bodyObject head]);
+        CGFloat height = image.rows;
+        
+        if (height > y) {
+            height -= y;
+        } else {
+            y = 0;
+        }
+        
+        fullBodyRect = cvRect(0, y, image.cols, height);
+        bodyMat = image(fullBodyRect);
+        
+        //Try to detect tshirtColor automatic, once
+        if (isnan(self.selectingScalar[0])) {
+            if (bodyMat.cols > 0 && bodyMat.rows > 0) {
+                int rows = bodyMat.rows;
+                int cols = bodyMat.cols;
+                self.selectingScalar = [self averageScalarForImage:bodyMat inPoint: CGPointMake(cols/2 - 7, rows - 7)];
+            }
+        }
+    }
+    
     if (self.selectedPointDidChanged) {
         self.selectingScalar = [self averageScalarForImage:image inPoint: self.selectedPoint];
         self.selectedPointDidChanged = false;
     }
     
+    cvtColor(image, image, COLOR_BGRA2BGR);
+    
     if (!isnan(self.selectingScalar[0]) && !isnan(self.fillingScalar[0])) {
         image = [self.tshirtDetector fillImg: image withColor:[self fillingScalar] byColor:[self selectingScalar]];
-       // bodyMat.copyTo(image(bodyRect));
+        // bodyMat.copyTo(image(bodyRect));
+    }
+    
+    cvtColor(image, image, COLOR_BGR2RGB);
+
+    NSArray* shoulders = bodyObject.shoulders;
+    
+    if (shoulders.count == 2) {
+        CGPoint left = [((NSValue*) [shoulders objectAtIndex:0]) CGPointValue];
+        CGPoint right = [((NSValue*) [shoulders objectAtIndex:1]) CGPointValue];
+        
+        CGFloat shouldersWidth = (right.x + left.x) * 0.6;
+        CGFloat x = (left.x + right.x) / 2;
+        CGFloat y = (left.y + right.y) / 2;
+        
+        CGRect cgRect = CGRectMake(x, y, image.cols - x, image.rows - y);
+        
+        if (self.additionalImage.size().empty() || CGRectGetMinX(cgRect) <= 0 || CGRectGetMinY(cgRect) <= 0) return;
+        
+        auto scale = shouldersWidth / self.additionalImage.cols;
+        auto cols = self.additionalImage.cols * scale;
+        auto rows = self.additionalImage.rows * scale;
+        
+        Mat resizedMat;
+        
+        resize(self.additionalImage, resizedMat, cvSize(cols, rows));
+        cvtColor(resizedMat, resizedMat, COLOR_BGRA2BGR);
+        
+        CGRect rect = CGRectMake(CGRectGetMinX(cgRect) - resizedMat.cols / 2, CGRectGetMinY(cgRect), resizedMat.cols, resizedMat.rows);
+        
+        if (CGRectGetMaxX(rect) < image.cols && CGRectGetMaxY(rect) < image.rows ) {
+            resizedMat.copyTo(image(cv::Rect(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height)));
+        }
     }
 }
 
@@ -111,6 +175,10 @@ using namespace std;
 }
 
 #pragma mark - Public
+
+- (void)setImage:(UIImage*) image {
+    _additionalImage = [image cvMatRepresentationColor];
+}
 
 - (void)startCapture {
     [self.videoCamera start];
