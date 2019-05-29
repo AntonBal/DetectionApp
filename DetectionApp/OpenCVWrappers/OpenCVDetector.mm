@@ -64,42 +64,13 @@ using namespace std;
 
 - (void)processImage:(cv::Mat&)image {
     
-    auto bodyObject = [self.bodyDetector detecBodyForMat: image];
-    
-    cv::Rect bodyRect = cvRect(0, 0, image.cols, image.rows);
-    Mat bodyMat = image;
-    
-    if (bodyObject != nil) {
-        
-        CGFloat y = CGRectGetMaxY([bodyObject head]);
-        CGFloat height = image.rows;
-        
-        if (height > y) {
-            height -= y;
-        } else {
-            y = 0;
-        }
-        
-        bodyRect = cvRect(0, y, image.cols, height);
-        bodyMat = image(bodyRect);
-        
-        //Try to detect tshirtColor automatic, once
-        if (isnan(self.selectingScalar[0])) {
-            if (bodyMat.cols > 0 && bodyMat.rows > 0) {
-                int rows = bodyMat.rows;
-                int cols = bodyMat.cols;
-                self.selectingScalar = [self averageScalarForImage:bodyMat inPoint: CGPointMake(cols/2 - 7, rows - 7)];
-            }
-        }
-    }
-    
     if (self.selectedPointDidChanged) {
         self.selectingScalar = [self averageScalarForImage:image inPoint: self.selectedPoint];
         self.selectedPointDidChanged = false;
     }
     
     if (!isnan(self.selectingScalar[0]) && !isnan(self.fillingScalar[0])) {
-        image = [self.tshirtDetector fillImg: bodyMat withColor:[self fillingScalar] byColor:[self selectingScalar]];
+        image = [self.tshirtDetector fillImg: image withColor:[self fillingScalar] byColor:[self selectingScalar]];
        // bodyMat.copyTo(image(bodyRect));
     }
 }

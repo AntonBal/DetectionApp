@@ -95,24 +95,11 @@ using namespace std;
     
     cv::Size blurSize(6,6);
     blur(mask1, mask1, blurSize);
-    threshold(img, img, 50, 255, THRESH_BINARY);
-
-    // Floodfill from point (0, 0)
-    Mat im_floodfill = img.clone();
-    floodFill(im_floodfill, cv::Point(0,0), detectingColor);
-    
-    // Invert floodfilled image
-    Mat im_floodfill_inv;
-    bitwise_not(im_floodfill, im_floodfill_inv);
-    
-    // Combine the two images to get the foreground.
-    Mat im_out = (img | im_floodfill_inv);
-    
-    return im_out;
+    threshold(mask1, mask1, 50, 255, THRESH_BINARY);
     
     img = [self fillBigContourForImage:img mask: mask1 color: fillingColor];
 
-    cvtColor(img, img, COLOR_BGR2BGRA);
+    cvtColor(img, img, COLOR_BGR2RGB);
     
     return img;
     /*
