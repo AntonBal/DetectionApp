@@ -102,7 +102,7 @@ using namespace std;
     cvtColor(image, image, COLOR_BGRA2BGR);
     
     if (!isnan(self.selectingScalar[0]) && !isnan(self.fillingScalar[0])) {
-        image = [self.tshirtDetector fillImg: image withColor:[self fillingScalar] byColor:[self selectingScalar]];
+        image = [self.tshirtDetector fillImg: image withColor:[self fillingScalar] byColor:[self selectingScalar]].image;
         // bodyMat.copyTo(image(bodyRect));
     }
     
