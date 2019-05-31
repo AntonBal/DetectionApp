@@ -35,12 +35,8 @@ class CollectionTableViewCell: UITableViewCell {
 
 extension CollectionTableViewCell: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let rect = bounds.insetBy(dx: 20, dy: 20)
+        let rect = bounds.insetBy(dx: 15, dy: 15)
         return CGSize(width: rect.height, height: rect.height)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 50
     }
 }
 

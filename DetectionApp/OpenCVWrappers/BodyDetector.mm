@@ -16,7 +16,6 @@ typedef cv::Point CVPoint;
 
 @interface BodyDetector()
 {
-    vector<cv::Rect> objects;
     CascadeClassifier bodyCascade;
     dispatch_queue_global_t background;
 }
@@ -103,7 +102,7 @@ typedef cv::Point CVPoint;
 }
 
 - (cv::Mat) detect:(cv::Mat) image {
-    objects.clear();
+    vector<cv::Rect> objects;
     
     bodyCascade.detectMultiScale(image, objects);
     
@@ -125,11 +124,12 @@ typedef cv::Point CVPoint;
     
    // cv::rotate(img, img, cv::ROTATE_90_CLOCKWISE);
     
-    objects.clear();
+    vector<cv::Rect> objects;
     
     bodyCascade.detectMultiScale(img, objects);
     
     BodyObject* body;
+    
     if (objects.size() > 0) {
         body = [[BodyObject alloc] init];
         const cv::Rect faceRectangle = objects[0];
@@ -141,9 +141,7 @@ typedef cv::Point CVPoint;
 //        UIImage* image = [UIImage imageFromCVMat: img];
         
         auto y = faceRectangle.y + faceRectangle.height + faceRectangle.width / 2;
-        auto point1 = cvPoint(0, y);
-        auto point2 = cvPoint(INT_MAX, y);
-    
+      
         Mat drawing;// = [self contoursForImage:img mask:[self makeHandMaskFor:img]];
         
         bool found = false;
@@ -151,6 +149,12 @@ typedef cv::Point CVPoint;
         NSMutableArray* shoulders = [[NSMutableArray alloc] init];
      //   line(img, point1, point2, color);
         
+        /*
+        // Auto find lines
+         
+         auto point1 = cvPoint(0, y);
+         auto point2 = cvPoint(INT_MAX, y);
+
         LineIterator it(drawing, point1, point2, 8);
         
         //Try to find intersection of a contour and line
@@ -161,6 +165,7 @@ typedef cv::Point CVPoint;
                 found = true;
             }
         }
+        */
         
         if (!found) { // If not found to calculate it
             y = MIN(y, img.rows);

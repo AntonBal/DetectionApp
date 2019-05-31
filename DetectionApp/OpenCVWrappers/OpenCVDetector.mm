@@ -176,8 +176,26 @@ using namespace std;
 
 #pragma mark - Public
 
+- (void)setCameraType:(OpenCVDetectorType) type {
+    if (type == OpenCVDetectorTypeFront) {
+        self.videoCamera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionFront;
+    } else {
+        self.videoCamera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionBack;
+    }
+}
+
+-(void)setHSVRangeValueWithHValue:(float) h sValue:(float) s vValue:(float) v {
+    [self.tshirtDetector setHSVRangeValueWithHValue:h sValue:s vValue:v];
+}
+
 - (void)setImage:(UIImage*) image {
-    _additionalImage = [image cvMatRepresentationColor];
+    
+    if (image) {
+        _additionalImage = [image cvMatRepresentationColor];
+    } else {
+        _additionalImage = Mat();
+    }
+    
 }
 
 - (void)startCapture {

@@ -23,11 +23,25 @@ struct HSVColor {
 using namespace cv;
 using namespace std;
 
+@interface TShirtDetector()
+
+@property (nonatomic, assign) float hRangeValue;
+@property (nonatomic, assign) float sRangeValue;
+@property (nonatomic, assign) float vRangeValue;
+
+@end
+
 @implementation TShirtDetector
 
 #pragma mark - Public
 
-- (cv::Mat) fillImg:(cv::Mat&) img withColor:(cv::Scalar) fillingColor byColor:(cv::Scalar) detectingColor {
+-(void)setHSVRangeValueWithHValue:(float) h sValue:(float) s vValue:(float) v {
+    self.hRangeValue = h;
+    self.sRangeValue = s;
+    self.vRangeValue = v;
+}
+
+- (ImageWithMask) fillImg:(cv::Mat&) img withColor:(cv::Scalar) fillingColor byColor:(cv::Scalar) detectingColor {
     
     Mat hsv;
     
@@ -39,7 +53,7 @@ using namespace std;
     //    inRange(hsv, Scalar(0, 120, 70), Scalar(10, 255, 255), mask1);
     //    inRange(hsv, Scalar(170, 120, 70), Scalar(180, 255, 255), mask2);
     
-    UIColor* uiColor1 = [UIColor colorWithRed:detectingColor[2]/255 green:detectingColor[1]/255 blue:detectingColor[0]/255 alpha:1];
+//    UIColor* uiColor1 = [UIColor colorWithRed:detectingColor[2]/255 green:detectingColor[1]/255 blue:detectingColor[0]/255 alpha:1];
     
     // Creating masks to detect the upper and lower red color.
     ///The Hue values are actually distributed over a circle (range between 0-360 degrees) but in OpenCV to fit into 8bit value the range is from 0-180.
@@ -51,21 +65,17 @@ using namespace std;
     bgr.r = detectingColor[2];
     
     auto hlsColor = [self bgr2hsv: bgr];
-    auto hlsColor2 = [self bgrScalarToHLS: detectingColor];
     
     auto h = hlsColor.h;
     auto s = hlsColor.s;
     auto v = hlsColor.v;
     
-    auto hValue = 2;
-    auto svValue = 40;
-    
-    auto hMin = h - hValue;
-    auto hMax = h + hValue;
-    auto sMin = s - svValue;
-    auto sMax = s + svValue;
-    auto vMin = v - svValue;
-    auto vMax = v + svValue;
+    auto hMin = h - self.hRangeValue;
+    auto hMax = h + self.hRangeValue;
+    auto sMin = s - self.sRangeValue;
+    auto sMax = s + self.sRangeValue;
+    auto vMin = v - self.vRangeValue;
+    auto vMax = v + self.vRangeValue;
     
     if (hMin < 0) {
         hMin = 180 + hMin;
@@ -76,19 +86,19 @@ using namespace std;
     }
     
     if (sMin < 0) {
-        sMin = svValue + sMin;
+        sMin = self.sRangeValue + sMin;
     }
     
     if (vMin < 0) {
-        vMin = svValue + vMin;
+        vMin = self.vRangeValue + vMin;
     }
     
     auto temp = hMin;
     hMin = MIN(hMin, hMax);
     hMax = MAX(temp, hMax);
     
-    inRange(hsv, Scalar(hMin, sMin, vMin), Scalar(hMin + hValue, MIN(sMax + 20, 255), MIN(vMax + 20, 255)), mask1);
-    inRange(hsv, Scalar(hMax, sMin, vMin), Scalar(hMax + hValue, MIN(sMax + 20, 255), MIN(vMax + 20, 255)), mask2);
+    inRange(hsv, Scalar(hMin, sMin, vMin), Scalar(hMin + 10, MIN(sMax + 20, 255), MIN(vMax + 20, 255)), mask1);
+    inRange(hsv, Scalar(hMax, sMin, vMin), Scalar(hMax + 10, MIN(sMax + 20, 255), MIN(vMax + 20, 255)), mask2);
     
     // Generating the final mask
     mask1 = mask1 + mask2;
@@ -97,9 +107,11 @@ using namespace std;
     blur(mask1, mask1, blurSize);
     threshold(mask1, mask1, 50, 255, THRESH_BINARY);
     
-    img = [self fillBigContourForImage:img mask: mask1 color: fillingColor];
+    ImageWithMask object = ImageWithMask();
+    object.image = [self fillBigContourForImage:img mask: mask1 color: fillingColor];
+    object.mask = mask1;
     
-    return img;
+    return object;
     /*
      Mat kernel = Mat::ones(3,3, CV_32F);
      morphologyEx(mask1, mask1, cv::MORPH_OPEN, kernel);
@@ -192,15 +204,17 @@ using namespace std;
     /// Find contours
     findContours(mask, contours, hierarchy, CV_RETR_EXTERNAL, CV_LINK_RUNS, cv::Point(0, 0));
     
+    /*
     int largest_area=0;
     int largest_contour_index=0;
     int largest_contour_index2=0;
     cv::Rect bounding_rect;
+     */
     
     if (contours.size() > 0) {
         
         Mat drawing = Mat::zeros(img.size(), CV_8UC1);
-        
+        /*
         for( int i = 0; i< contours.size(); i++ ) // iterate through each contour.
         {
             double a=contourArea( contours[i],false);  //  Find the area of contour
@@ -211,6 +225,7 @@ using namespace std;
                 bounding_rect = boundingRect(contours[i]);
             }
         }
+         */
 //        rectangle(img, bounding_rect,  Scalar(0,255,0),1, 8,0);
         drawContours(img, contours, -1, color, CV_FILLED, LINE_AA, hierarchy);
 //        fillPoly(img, contours, color);

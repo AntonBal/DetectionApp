@@ -9,6 +9,12 @@
 import UIKit
 import AVFoundation
 
+struct HSVRange {
+    var h: Float = 0
+    var s: Float = 0
+    var v: Float = 0
+}
+
 class CameraViewController: UIViewController {
    
     lazy var detecor = OpenCVDetector(cameraView: cameraView, scale: 1, preset: .vga640x480, type: .back)
@@ -22,7 +28,8 @@ class CameraViewController: UIViewController {
         let colors = [nil ,#colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1),#colorLiteral(red: 0.5725490451, green: 0, blue: 0.2313725501, alpha: 1),#colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1),#colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1),#colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1),#colorLiteral(red: 0.09019608051, green: 0, blue: 0.3019607961, alpha: 1),#colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1),#colorLiteral(red: 0.3098039329, green: 0.01568627544, blue: 0.1294117719, alpha: 1),#colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1), #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)]
         
         let imageModel = ModelCell(cellClass: ImageCollectionViewCell.self, identifier: ImageCollectionViewCellIdentifier, items: images,
-                                   configuration: { (cell, indexPath) in (cell as! ImageCollectionViewCell).image = images[indexPath.row]
+                                   configuration: { (cell, indexPath) in
+                                    (cell as! ImageCollectionViewCell).image = images[indexPath.row]
         }) { (indexPath) in
             self.detecor.setImage(images[indexPath.row])
         }
@@ -47,6 +54,18 @@ class CameraViewController: UIViewController {
     
     @IBOutlet weak var cameraView: UIView!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var hValueLabel: UILabel!
+    @IBOutlet weak var sValueLabel: UILabel!
+    @IBOutlet weak var vValueLabel: UILabel!
+    
+    private var currentHSV = HSVRange(h: 0, s: 0, v: 0) {
+        didSet {
+            hValueLabel.text = "\(currentHSV.h)"
+            sValueLabel.text = "\(currentHSV.s)"
+            vValueLabel.text = "\(currentHSV.v)"
+            detecor.setHSVRangeValueWithHValue(currentHSV.h, sValue: currentHSV.s, vValue: currentHSV.v)
+        }
+    }
     
     private let CollectionTableViewCellIdentifier = "CollectionTableViewCell"
     
@@ -86,6 +105,27 @@ class CameraViewController: UIViewController {
         
         detecor.setDetecting(location)
     }
+    
+    //MARK: Actions
+   
+    @IBAction func hValueAction(_ sender: UISlider) {
+        currentHSV.h = sender.value
+    }
+    
+    @IBAction func sValueAction(_ sender: UISlider) {
+        currentHSV.s = sender.value
+    }
+    
+    @IBAction func vValueAction(_ sender: UISlider) {
+        currentHSV.v = sender.value
+    }
+    
+    @IBAction func cameraAction(_ sender: UIButton) {
+        detecor.stopCapture()
+        sender.isSelected.toggle()
+        detecor.setCameraType(sender.isSelected ? .front : .back)
+        detecor.startCapture()
+    }
 }
 
 extension CameraViewController: UIGestureRecognizerDelegate {
@@ -109,7 +149,7 @@ extension CameraViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableView.frame.height
+        return tableView.frame.height * 0.8
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

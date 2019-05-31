@@ -23,8 +23,10 @@ typedef NS_OPTIONS(NSUInteger, OpenCVDetectorType) {
 
 - (instancetype)initWithCameraView:(UIView *)view scale:(CGFloat)scale preset:(AVCaptureSessionPreset) preset type: (OpenCVDetectorType) type ;
 
+- (void)setHSVRangeValueWithHValue:(float) h sValue:(float) s vValue:(float) v;
 - (void)startCapture;
 - (void)stopCapture;
+- (void)setCameraType:(OpenCVDetectorType) type;
 - (void)setDetectingPoint: (CGPoint) point;
 - (void)setFillingColorWithRed:(double) red green:(double) green blue:(double) blue;
 - (void)setImage:(UIImage* _Nullable) image;
