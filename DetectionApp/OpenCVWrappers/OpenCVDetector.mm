@@ -65,9 +65,12 @@ using namespace std;
 
 - (void)processImage:(cv::Mat&)image {
     
-    auto bodyObject = [self.bodyDetector detecBodyForMat: image];
+    BodyObject* bodyObject = [self.bodyDetector detecBodyForMat: image];
     
     cv::Rect fullBodyRect = cvRect(0, 0, image.cols, image.rows);
+    
+    cvtColor(image, image, COLOR_BGRA2BGR);
+    
     Mat bodyMat = image;
     
     if (bodyObject != nil) {
@@ -99,14 +102,17 @@ using namespace std;
         self.selectedPointDidChanged = false;
     }
     
+    Mat mask;
+    
     cvtColor(image, image, COLOR_BGRA2BGR);
     
     if (!isnan(self.selectingScalar[0]) && !isnan(self.fillingScalar[0])) {
-        image = [self.tshirtDetector fillImg: image withColor:[self fillingScalar] byColor:[self selectingScalar]];
-        // bodyMat.copyTo(image(bodyRect));
+        ImageWithMask imageWithMask = [self.tshirtDetector fillImg: bodyMat withColor:[self fillingScalar] byColor:[self selectingScalar]];
+        mask = imageWithMask.mask;
+//        bodyMat = imageWithMask.image;
+    } else {
+        return;
     }
-    
-    cvtColor(image, image, COLOR_BGR2RGB);
 
     NSArray* shoulders = bodyObject.shoulders;
     
@@ -114,29 +120,52 @@ using namespace std;
         CGPoint left = [((NSValue*) [shoulders objectAtIndex:0]) CGPointValue];
         CGPoint right = [((NSValue*) [shoulders objectAtIndex:1]) CGPointValue];
         
-        CGFloat shouldersWidth = (right.x + left.x) * 0.6;
+        CGFloat shouldersWidth = (right.x - left.x) * 0.7;
         CGFloat x = (left.x + right.x) / 2;
-        CGFloat y = (left.y + right.y) / 2;
+        CGFloat y = 0; //(left.y + right.y) / 2 * 1.2;
         
-        CGRect cgRect = CGRectMake(x, y, image.cols - x, image.rows - y);
-        
-        if (self.additionalImage.size().empty() || CGRectGetMinX(cgRect) <= 0 || CGRectGetMinY(cgRect) <= 0) return;
-        
-        auto scale = shouldersWidth / self.additionalImage.cols;
-        auto cols = self.additionalImage.cols * scale;
-        auto rows = self.additionalImage.rows * scale;
-        
-        Mat resizedMat;
-        
-        resize(self.additionalImage, resizedMat, cvSize(cols, rows));
-        cvtColor(resizedMat, resizedMat, COLOR_BGRA2BGR);
-        
-        CGRect rect = CGRectMake(CGRectGetMinX(cgRect) - resizedMat.cols / 2, CGRectGetMinY(cgRect), resizedMat.cols, resizedMat.rows);
-        
-        if (CGRectGetMaxX(rect) < image.cols && CGRectGetMaxY(rect) < image.rows ) {
-            resizedMat.copyTo(image(cv::Rect(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height)));
+        if (!self.additionalImage.size().empty() && x >= 0 && y >= 0) {
+            float imageScale = float(bodyMat.cols) / float(self.additionalImage.cols);
+            float scale = shouldersWidth / bodyMat.cols;
+            float cols = self.additionalImage.cols * scale * imageScale;
+            float rows = self.additionalImage.rows * scale * imageScale;
+            
+            Mat resizedMat;
+            
+            resize(self.additionalImage, resizedMat, cvSize(cols, rows));
+            
+            CvRect rect = CvRect(x - resizedMat.cols / 2, y, resizedMat.cols, resizedMat.rows);
+            
+            if (rect.x + rect.width < bodyMat.cols && rect.y + rect.height < bodyMat.rows ) {
+                Mat mask_inv;
+                Mat bodyImage;
+                Mat tshirtImage;
+                
+                cvtColor(mask, mask, COLOR_RGB2HSV);
+                cvtColor(resizedMat, resizedMat, COLOR_BGRA2BGR);
+                cvtColor(resizedMat, resizedMat, COLOR_BGR2HSV);
+                
+                Mat addImage = Mat(bodyMat.rows, bodyMat.cols, bodyMat.type());
+                resizedMat.copyTo(addImage(rect));
+                
+                bitwise_not(mask, mask_inv);
+                
+                bitwise_and(bodyMat, bodyMat, bodyImage, mask_inv);
+                bitwise_and(addImage, addImage, tshirtImage, mask);
+                
+                cv::add(bodyImage, tshirtImage, bodyMat);
+                
+                cvtColor(bodyMat, bodyMat, COLOR_HSV2BGR);
+            }
         }
     }
+    
+    // create dst with background color of your choice
+    cv::Mat dst(src.size(), src.type(), myColor);
+    
+    bodyMat.copyTo(image(fullBodyRect));
+    
+    cvtColor(image, image, COLOR_BGR2RGB);
 }
 
 #pragma mark - Private
