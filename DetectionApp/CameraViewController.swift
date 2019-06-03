@@ -9,12 +9,6 @@
 import UIKit
 import AVFoundation
 
-struct HSVRange {
-    var h: Float = 0
-    var s: Float = 0
-    var v: Float = 0
-}
-
 class CameraViewController: UIViewController {
    
     lazy var detecor = OpenCVDetector(cameraView: cameraView, scale: 1, preset: .vga640x480, type: .back)
@@ -57,15 +51,9 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var hValueLabel: UILabel!
     @IBOutlet weak var sValueLabel: UILabel!
     @IBOutlet weak var vValueLabel: UILabel!
-    
-    private var currentHSV = HSVRange(h: 0, s: 0, v: 0) {
-        didSet {
-            hValueLabel.text = "\(currentHSV.h)"
-            sValueLabel.text = "\(currentHSV.s)"
-            vValueLabel.text = "\(currentHSV.v)"
-            detecor.setHSVRangeValueWithHValue(currentHSV.h, sValue: currentHSV.s, vValue: currentHSV.v)
-        }
-    }
+    @IBOutlet weak var hValueSlider: UISlider!
+    @IBOutlet weak var sValueSlider: UISlider!
+    @IBOutlet weak var vValueSlider: UISlider!
     
     private let CollectionTableViewCellIdentifier = "CollectionTableViewCell"
     
@@ -74,7 +62,7 @@ class CameraViewController: UIViewController {
         setup()
     }
     
-    func setup() {
+    private func setup() {
         
         detecor.startCapture()
         
@@ -88,6 +76,21 @@ class CameraViewController: UIViewController {
         tableView.register(UINib(nibName: "CollectionTableViewCell", bundle: nil), forCellReuseIdentifier: CollectionTableViewCellIdentifier)
         tableView.isPagingEnabled = true
         tableView.contentInset = .zero
+        
+        hValueSlider.value = 4
+        sValueSlider.value = 32
+        vValueSlider.value = 32
+        
+        hsvDidChanged()
+    }
+    
+    private func hsvDidChanged() {
+        hValueLabel.text = "\(hValueSlider.value)"
+        sValueLabel.text = "\(sValueSlider.value)"
+        vValueLabel.text = "\(vValueSlider.value)"
+        detecor.setHSVRangeValueWithHValue(hValueSlider.value,
+                                           sValue: sValueSlider.value,
+                                           vValue: vValueSlider.value)
     }
     
     @objc func gestureAction(_ gesture: UITapGestureRecognizer) {
@@ -108,16 +111,8 @@ class CameraViewController: UIViewController {
     
     //MARK: Actions
    
-    @IBAction func hValueAction(_ sender: UISlider) {
-        currentHSV.h = sender.value
-    }
-    
-    @IBAction func sValueAction(_ sender: UISlider) {
-        currentHSV.s = sender.value
-    }
-    
-    @IBAction func vValueAction(_ sender: UISlider) {
-        currentHSV.v = sender.value
+    @IBAction func sliderValueAction(_ sender: UISlider) {
+        hsvDidChanged()
     }
     
     @IBAction func cameraAction(_ sender: UIButton) {

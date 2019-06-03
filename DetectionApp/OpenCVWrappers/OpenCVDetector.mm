@@ -65,9 +65,12 @@ using namespace std;
 
 - (void)processImage:(cv::Mat&)image {
     
-    auto bodyObject = [self.bodyDetector detecBodyForMat: image];
+    BodyObject* bodyObject = [self.bodyDetector detecBodyForMat: image];
     
     cv::Rect fullBodyRect = cvRect(0, 0, image.cols, image.rows);
+    
+    cvtColor(image, image, COLOR_BGRA2BGR);
+    
     Mat bodyMat = image;
     
     if (bodyObject != nil) {
@@ -99,44 +102,40 @@ using namespace std;
         self.selectedPointDidChanged = false;
     }
     
-    cvtColor(image, image, COLOR_BGRA2BGR);
+    Mat imageMat = Mat();
+    CvRect imageFrame;
     
-    if (!isnan(self.selectingScalar[0]) && !isnan(self.fillingScalar[0])) {
-        image = [self.tshirtDetector fillImg: image withColor:[self fillingScalar] byColor:[self selectingScalar]].image;
-        // bodyMat.copyTo(image(bodyRect));
-    }
-    
-    cvtColor(image, image, COLOR_BGR2RGB);
-
     NSArray* shoulders = bodyObject.shoulders;
     
     if (shoulders.count == 2) {
         CGPoint left = [((NSValue*) [shoulders objectAtIndex:0]) CGPointValue];
         CGPoint right = [((NSValue*) [shoulders objectAtIndex:1]) CGPointValue];
         
-        CGFloat shouldersWidth = (right.x + left.x) * 0.6;
+        CGFloat shouldersWidth = (right.x - left.x) * 0.7;
         CGFloat x = (left.x + right.x) / 2;
-        CGFloat y = (left.y + right.y) / 2;
+        CGFloat y = 80;
         
-        CGRect cgRect = CGRectMake(x, y, image.cols - x, image.rows - y);
-        
-        if (self.additionalImage.size().empty() || CGRectGetMinX(cgRect) <= 0 || CGRectGetMinY(cgRect) <= 0) return;
-        
-        auto scale = shouldersWidth / self.additionalImage.cols;
-        auto cols = self.additionalImage.cols * scale;
-        auto rows = self.additionalImage.rows * scale;
-        
-        Mat resizedMat;
-        
-        resize(self.additionalImage, resizedMat, cvSize(cols, rows));
-        cvtColor(resizedMat, resizedMat, COLOR_BGRA2BGR);
-        
-        CGRect rect = CGRectMake(CGRectGetMinX(cgRect) - resizedMat.cols / 2, CGRectGetMinY(cgRect), resizedMat.cols, resizedMat.rows);
-        
-        if (CGRectGetMaxX(rect) < image.cols && CGRectGetMaxY(rect) < image.rows ) {
-            resizedMat.copyTo(image(cv::Rect(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height)));
+        if (!self.additionalImage.size().empty() && x >= 0 && y >= 0) {
+            float imageScale = float(bodyMat.cols) / float(self.additionalImage.cols);
+            float scale = shouldersWidth / bodyMat.cols;
+            float cols = self.additionalImage.cols * scale * imageScale;
+            float rows = self.additionalImage.rows * scale * imageScale;
+            
+            resize(self.additionalImage, imageMat, cvSize(cols, rows));
+            
+            imageFrame = CvRect(x - imageMat.cols / 2, y, imageMat.cols, imageMat.rows);
+            cvtColor(imageMat, imageMat, COLOR_RGBA2BGR);
         }
     }
+    
+    cvtColor(image, image, COLOR_BGRA2BGR);
+    
+    if (!isnan(self.selectingScalar[0]) && !isnan(self.fillingScalar[0])) {
+        bodyMat = [self.tshirtDetector fillImg:bodyMat withColor: [self fillingScalar] byColor: [self selectingScalar] withAdditionalImage:imageMat inRect: imageFrame];
+        bodyMat.copyTo(image(fullBodyRect));
+    }
+    
+    cvtColor(image, image, COLOR_BGR2RGB);
 }
 
 #pragma mark - Private

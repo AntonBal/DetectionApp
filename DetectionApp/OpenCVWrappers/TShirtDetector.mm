@@ -42,7 +42,7 @@ using namespace std;
     self.vRangeValue = v;
 }
 
-- (ImageWithMask) fillImg:(cv::Mat&) img withColor:(cv::Scalar) fillingColor byColor:(cv::Scalar) detectingColor {
+- (cv::Mat) fillImg:(cv::Mat&) img withColor:(cv::Scalar) fillingColor byColor:(cv::Scalar) detectingColor withAdditionalImage:(cv::Mat) addImage inRect:(CvRect) rect {
     
     Mat hsv;
     
@@ -100,8 +100,8 @@ using namespace std;
     hMin = MIN(hMin, hMax);
     hMax = MAX(temp, hMax);
     
-    inRange(hsv, Scalar(hMin, sMin, vMin), Scalar(hMin + 10, MIN(sMax + 20, 255), MIN(vMax + 20, 255)), mask1);
-    inRange(hsv, Scalar(hMax, sMin, vMin), Scalar(hMax + 10, MIN(sMax + 20, 255), MIN(vMax + 20, 255)), mask2);
+    inRange(hsv, Scalar(hMin, sMin, vMin), Scalar(h, MIN(s, 255), MIN(v, 255)), mask1);
+    inRange(hsv, Scalar(h, s, v), Scalar(hMax, MIN(sMax, 255), MIN(vMax, 255)), mask2);
     
     // Generating the final mask
     mask1 = mask1 + mask2;
@@ -126,6 +126,12 @@ using namespace std;
     
     cvtColor(background, background, COLOR_HSV2BGR);
     
+    if (!addImage.size().empty()) {
+        if (rect.x + rect.width < background.cols && rect.y + rect.height < background.rows ) {
+            addImage.copyTo(background(rect));
+        }
+    }
+    
     // creating an inverted mask to segment out the cloth from the frame
     bitwise_not(mask1, mask2);
      
@@ -140,15 +146,8 @@ using namespace std;
     // Generating the final augmented output.
     // addWeighted(res1, 1, res2, 1,  0, final_output);
     cv::add(res1, res2, final_output);
-    
-    cvtColor(final_output, final_output, COLOR_BGR2RGB);
 
-    ImageWithMask object = ImageWithMask();
-
-    object.image = final_output;
-    object.mask = mask1;
-    
-    return object;
+    return final_output;
 }
 
 -(HSVColor)bgr2hsv:(RGBColor) bgr

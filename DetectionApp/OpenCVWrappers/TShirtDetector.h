@@ -10,18 +10,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#ifdef __cplusplus
-struct ImageWithMask {
-    cv::Mat image;
-    cv::Mat mask;
-};
-#endif
-
 @interface TShirtDetector : NSObject
 
 #ifdef __cplusplus
 -(void)setHSVRangeValueWithHValue:(float) h sValue:(float) s vValue:(float) v;
-- (ImageWithMask) fillImg:(cv::Mat&) img withColor:(cv::Scalar) fillingColor byColor:(cv::Scalar) detectingColor;
+- (cv::Mat) fillImg:(cv::Mat&) img withColor:(cv::Scalar) fillingColor byColor:(cv::Scalar) detectingColor withAdditionalImage:(cv::Mat) addImage inRect:(CvRect) rect;
 #endif
 
 @end
