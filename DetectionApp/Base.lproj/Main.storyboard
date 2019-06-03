@@ -47,7 +47,7 @@
                                     <constraint firstAttribute="width" constant="120" id="9Bf-BL-clb"/>
                                 </constraints>
                                 <connections>
-                                    <action selector="hValueAction:" destination="V6d-Fe-ybt" eventType="valueChanged" id="xi7-hO-r1C"/>
+                                    <action selector="sliderValueAction:" destination="V6d-Fe-ybt" eventType="valueChanged" id="soc-lB-OeP"/>
                                 </connections>
                             </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="S" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dBK-1R-IXh">
@@ -68,7 +68,7 @@
                                     <constraint firstAttribute="width" constant="120" id="bB3-Ke-Eaj"/>
                                 </constraints>
                                 <connections>
-                                    <action selector="sValueAction:" destination="V6d-Fe-ybt" eventType="valueChanged" id="Fmt-oy-4TZ"/>
+                                    <action selector="sliderValueAction:" destination="V6d-Fe-ybt" eventType="valueChanged" id="SOQ-xg-M65"/>
                                 </connections>
                             </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="V" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="buK-PV-bCk">
@@ -83,7 +83,7 @@
                                     <constraint firstAttribute="width" constant="120" id="1f7-WN-gZF"/>
                                 </constraints>
                                 <connections>
-                                    <action selector="vValueAction:" destination="V6d-Fe-ybt" eventType="valueChanged" id="5On-vC-Y1h"/>
+                                    <action selector="sliderValueAction:" destination="V6d-Fe-ybt" eventType="valueChanged" id="JLo-Uk-J5H"/>
                                 </connections>
                             </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aib-74-phF">
@@ -139,9 +139,12 @@
                     <connections>
                         <outlet property="cameraView" destination="aAV-0z-Kyz" id="p0V-LO-Hql"/>
                         <outlet property="hValueLabel" destination="umR-M9-p6g" id="Ldi-Af-Exj"/>
+                        <outlet property="hValueSlider" destination="OdX-wH-Qc7" id="fVg-s8-fPb"/>
                         <outlet property="sValueLabel" destination="qe9-1v-wte" id="P0c-E5-lAL"/>
+                        <outlet property="sValueSlider" destination="yfz-u2-7eq" id="78e-8e-7li"/>
                         <outlet property="tableView" destination="h58-LG-sp4" id="chS-gU-vfx"/>
                         <outlet property="vValueLabel" destination="aib-74-phF" id="9IW-dA-lad"/>
+                        <outlet property="vValueSlider" destination="sEe-TF-I1j" id="9pV-6G-RI1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r94-5x-v5F" userLabel="First Responder" sceneMemberID="firstResponder"/>

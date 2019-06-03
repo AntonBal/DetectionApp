@@ -7,6 +7,7 @@
 //
 
 #import "TShirtDetector.h"
+#import "UIImage+OpenCV.h"
 
 struct RGBColor {
     double r;
@@ -41,12 +42,14 @@ using namespace std;
     self.vRangeValue = v;
 }
 
-- (ImageWithMask) fillImg:(cv::Mat&) img withColor:(cv::Scalar) fillingColor byColor:(cv::Scalar) detectingColor {
+- (cv::Mat) fillImg:(cv::Mat&) img withColor:(cv::Scalar) fillingColor byColor:(cv::Scalar) detectingColor withAdditionalImage:(cv::Mat) addImage inRect:(CvRect) rect {
     
     Mat hsv;
     
     //Converting image from BGR to HSV color space.
     cvtColor(img, hsv, COLOR_BGR2HSV);
+    
+    Scalar fillingHSVColor = [self bgrScalarToHLS: fillingColor];
     
     Mat mask1, mask2;
     
@@ -97,8 +100,8 @@ using namespace std;
     hMin = MIN(hMin, hMax);
     hMax = MAX(temp, hMax);
     
-    inRange(hsv, Scalar(hMin, sMin, vMin), Scalar(hMin + 10, MIN(sMax + 20, 255), MIN(vMax + 20, 255)), mask1);
-    inRange(hsv, Scalar(hMax, sMin, vMin), Scalar(hMax + 10, MIN(sMax + 20, 255), MIN(vMax + 20, 255)), mask2);
+    inRange(hsv, Scalar(hMin, sMin, vMin), Scalar(h, MIN(s, 255), MIN(v, 255)), mask1);
+    inRange(hsv, Scalar(h, s, v), Scalar(hMax, MIN(sMax, 255), MIN(vMax, 255)), mask2);
     
     // Generating the final mask
     mask1 = mask1 + mask2;
@@ -107,37 +110,44 @@ using namespace std;
     blur(mask1, mask1, blurSize);
     threshold(mask1, mask1, 50, 255, THRESH_BINARY);
     
-    ImageWithMask object = ImageWithMask();
-    object.image = [self fillBigContourForImage:img mask: mask1 color: fillingColor];
-    object.mask = mask1;
+    Mat kernel = Mat::ones(3,3, CV_32F);
+    morphologyEx(mask1, mask1, cv::MORPH_OPEN, kernel);
+    morphologyEx(mask1, mask1, cv::MORPH_DILATE, kernel);
     
-    return object;
-    /*
-     Mat kernel = Mat::ones(3,3, CV_32F);
-     morphologyEx(mask1, mask1, cv::MORPH_OPEN, kernel);
-     morphologyEx(mask1, mask1, cv::MORPH_DILATE, kernel);
+    Mat background = Mat(hsv.rows, hsv.cols, hsv.type(), Scalar(fillingHSVColor[0], NAN, NAN));
+    
+    for (int i = 0; i < background.cols; i++) {
+        for (int j = 0; j < background.rows; j++) {
+            CvPoint point = cvPoint(i, j);
+            background.at<Vec3b>(point).val[1] = hsv.at<Vec3b>(point).val[1];
+            background.at<Vec3b>(point).val[2] = hsv.at<Vec3b>(point).val[2];
+        }
+    }
+    
+    cvtColor(background, background, COLOR_HSV2BGR);
+    
+    if (!addImage.size().empty()) {
+        if (rect.x + rect.width < background.cols && rect.y + rect.height < background.rows ) {
+            addImage.copyTo(background(rect));
+        }
+    }
+    
+    // creating an inverted mask to segment out the cloth from the frame
+    bitwise_not(mask1, mask2);
      
-     Mat background = Mat(img.rows, img.cols, img.type(), fillingColor);
-     cvtColor(background, background, COLOR_BGRA2BGR);
+    Mat res1, res2, final_output;
      
-     // creating an inverted mask to segment out the cloth from the frame
-     bitwise_not(mask1, mask2);
-     
-     Mat res1, res2, final_output;
-     
-     // Segmenting the cloth out of the frame using bitwise and with the inverted mask
-     bitwise_and(img, img, res1, mask2);
-     
-     // creating image showing static background frame pixels only for the masked region
-     bitwise_and(background, background, res2, mask1);
-     
-     // Generating the final augmented output.
-     addWeighted(res1, 1, res2, 1,  0, final_output);
-     
-     cvtColor(final_output, final_output, COLOR_BGR2BGRA);
-     
-     return final_output;
-     */
+    // Segmenting the cloth out of the frame using bitwise and with the inverted mask
+    bitwise_and(img, img, res1, mask2);
+    
+    // creating image showing static background frame pixels only for the masked region
+    bitwise_and(background, background, res2, mask1);
+    
+    // Generating the final augmented output.
+    // addWeighted(res1, 1, res2, 1,  0, final_output);
+    cv::add(res1, res2, final_output);
+
+    return final_output;
 }
 
 -(HSVColor)bgr2hsv:(RGBColor) bgr
