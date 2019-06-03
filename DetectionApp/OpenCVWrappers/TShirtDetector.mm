@@ -100,8 +100,8 @@ using namespace std;
     hMin = MIN(hMin, hMax);
     hMax = MAX(temp, hMax);
     
-    inRange(hsv, Scalar(hMin, sMin, vMin), Scalar(h, MIN(s, 255), MIN(v, 255)), mask1);
-    inRange(hsv, Scalar(h, s, v), Scalar(hMax, MIN(sMax, 255), MIN(vMax, 255)), mask2);
+    inRange(hsv, Scalar(hMin, sMin, vMin), Scalar(hMin + self.hRangeValue, MIN(sMax + self.sRangeValue, 255), MIN(vMax + self.vRangeValue, 255)), mask1);
+    inRange(hsv, Scalar(hMax, sMin, vMin), Scalar(hMax + self.hRangeValue, MIN(sMax + self.sRangeValue, 255), MIN(vMax + self.vRangeValue, 255)), mask2);
     
     // Generating the final mask
     mask1 = mask1 + mask2;
