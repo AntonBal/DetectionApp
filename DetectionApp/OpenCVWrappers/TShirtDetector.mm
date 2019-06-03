@@ -126,6 +126,7 @@ using namespace std;
     
     cvtColor(background, background, COLOR_HSV2BGR);
     
+    // Add extra image to t-shirt
     if (!addImage.size().empty()) {
         if (rect.x + rect.width < background.cols && rect.y + rect.height < background.rows ) {
             addImage.copyTo(background(rect));
