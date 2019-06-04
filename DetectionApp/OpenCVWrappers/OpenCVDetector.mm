@@ -150,7 +150,7 @@ vector<Scalar> scalarsForimage(Mat image, CGPoint point)  {
     
     Mat hsv;
     cvtColor(image, hsv, CV_BGRA2BGR);
-    cvtColor(hsv, hsv, CV_BGR2HSV);
+//    cvtColor(hsv, hsv, CV_BGR2HSV);
     
     int value = 3;
     if (x <= value || y <= value) {
@@ -159,14 +159,20 @@ vector<Scalar> scalarsForimage(Mat image, CGPoint point)  {
     
     Mat rect = hsv(cvRect(x - value, y - value, value * 2, value * 2));
     
-    vector<Scalar> hsvColors(rect.rows);
+    UIImage* ui = [UIImage imageFromCVMat:rect];
     
+    vector<Scalar> hsvColors(rect.rows * rect.cols);
+    
+    int size = 0;
     for (int i = 0; i < rect.rows; i++) {
         for (int j = 0; j < rect.cols; j++) {
             auto pixel = rect.at<Vec3b>(i, j);
-            hsvColors[i] = Scalar(pixel[0], pixel[1], pixel[2]);
+            hsvColors[size++] = Scalar(pixel.val[0], pixel.val[1], pixel.val[2]);
+            UIColor* uiColor1 = [UIColor colorWithRed: hsvColors[i][0]/255 green: hsvColors[i][1]/255 blue: hsvColors[i][2]/255 alpha: 1];
+            NSLog(@"");
         }
     }
+    
     
     return hsvColors;
 }

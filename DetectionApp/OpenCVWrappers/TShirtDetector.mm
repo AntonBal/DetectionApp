@@ -49,15 +49,19 @@ struct HSVColor {
     //Converting image from BGR to HSV color space.
     cvtColor(img, hsv, COLOR_BGR2HSV);
     
-    HSVColor detectingColors [sizeof(obj.detectingColors)];
-    HSVColor fillingColor = [self bgrScalar2HSVColor: obj.fillingColor];
+    vector<HSVColor> detectingColors(obj.detectingColors.size());
     Scalar fillingHSVColor = [self bgrScalarToHLS: obj.fillingColor];
-    
-    for (int i = 0; i < sizeof(obj.detectingColors); i++)
+   
+    for (int i = 0; i < obj.detectingColors.size(); i++)
         detectingColors[i] = [self bgrScalar2HSVColor: obj.detectingColors[i]];
     
     // Generating the final mask
-    mask1 = maskForImage(hsv, detectingColors, fillingColor);
+    HSVColor hsvRange = HSVColor();
+    hsvRange.h = self.hRangeValue;
+    hsvRange.s = self.sRangeValue;
+    hsvRange.v = self.vRangeValue;
+    
+    mask1 = maskForImage(hsv, detectingColors, hsvRange);
     
     cv::Size blurSize(6,6);
     blur(mask1, mask1, blurSize);
@@ -104,22 +108,23 @@ struct HSVColor {
     return final_output;
 }
 
-cv::Mat maskForImage(Mat image, HSVColor * colors, HSVColor hsv) {
+cv::Mat maskForImage(Mat image, vector<HSVColor> colors, HSVColor hsv) {
 
     Mat mask;
     //    inRange(hsv, Scalar(0, 120, 70), Scalar(10, 255, 255), mask1);
     //    inRange(hsv, Scalar(170, 120, 70), Scalar(180, 255, 255), mask2);
     
-    //    UIColor* uiColor1 = [UIColor colorWithRed:detectingColor[2]/255 green:detectingColor[1]/255 blue:detectingColor[0]/255 alpha:1];
     
     // Creating masks to detect the upper and lower red color.
     ///The Hue values are actually distributed over a circle (range between 0-360 degrees) but in OpenCV to fit into 8bit value the range is from 0-180.
     
-    for (int i = 0; i < sizeof(colors); i++)  {
+    for (int i = 0; i < colors.size(); i++)  {
       
         Mat mask1, mask2;
         HSVColor hlsColor = colors[i];
      
+        UIColor* uiColor1 = [UIColor colorWithHue: hlsColor.h / 180 saturation: hlsColor.s / 255 brightness: hlsColor.v / 255 alpha:1];
+        
         auto h = hlsColor.h;
         auto s = hlsColor.s;
         auto v = hlsColor.v;
@@ -156,11 +161,18 @@ cv::Mat maskForImage(Mat image, HSVColor * colors, HSVColor hsv) {
         
         // Generating the final mask
         
+        UIImage* imagemask1 = [UIImage imageFromCVMat:mask1];
+        UIImage* imagemask2 = [UIImage imageFromCVMat:mask2];
+        
         if (mask.size().empty()) {
             mask = mask1 + mask2;
         } else {
             mask = mask + mask1 + mask2;
         }
+        
+        UIImage* imagemask3 = [UIImage imageFromCVMat:mask];
+        
+        NSLog(@"");
     }
     
     return mask;
@@ -170,9 +182,9 @@ cv::Mat maskForImage(Mat image, HSVColor * colors, HSVColor hsv) {
 {
     ///https://en.wikipedia.org/wiki/HSL_and_HSV#Use_in_image_analysis
     RGBColor bgr = RGBColor();
-    bgr.r = bgrScalar[0];
+    bgr.r = bgrScalar[2];
     bgr.g = bgrScalar[1];
-    bgr.b = bgrScalar[2];
+    bgr.b = bgrScalar[0];
     
     HSVColor         hsv;
     double      min, max, delta;
