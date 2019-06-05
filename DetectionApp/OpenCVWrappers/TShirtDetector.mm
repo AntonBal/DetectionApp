@@ -111,9 +111,6 @@ struct HSVColor {
 cv::Mat maskForImage(Mat image, vector<HSVColor> colors, HSVColor hsv) {
 
     Mat mask;
-    //    inRange(hsv, Scalar(0, 120, 70), Scalar(10, 255, 255), mask1);
-    //    inRange(hsv, Scalar(170, 120, 70), Scalar(180, 255, 255), mask2);
-    
     
     // Creating masks to detect the upper and lower red color.
     ///The Hue values are actually distributed over a circle (range between 0-360 degrees) but in OpenCV to fit into 8bit value the range is from 0-180.
@@ -122,8 +119,6 @@ cv::Mat maskForImage(Mat image, vector<HSVColor> colors, HSVColor hsv) {
       
         Mat mask1, mask2;
         HSVColor hlsColor = colors[i];
-     
-        UIColor* uiColor1 = [UIColor colorWithHue: hlsColor.h / 180 saturation: hlsColor.s / 255 brightness: hlsColor.v / 255 alpha:1];
         
         auto h = hlsColor.h;
         auto s = hlsColor.s;
@@ -161,18 +156,11 @@ cv::Mat maskForImage(Mat image, vector<HSVColor> colors, HSVColor hsv) {
         
         // Generating the final mask
         
-        UIImage* imagemask1 = [UIImage imageFromCVMat:mask1];
-        UIImage* imagemask2 = [UIImage imageFromCVMat:mask2];
-        
         if (mask.size().empty()) {
             mask = mask1 + mask2;
         } else {
             mask = mask + mask1 + mask2;
         }
-        
-        UIImage* imagemask3 = [UIImage imageFromCVMat:mask];
-        
-        NSLog(@"");
     }
     
     return mask;

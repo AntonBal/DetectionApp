@@ -98,10 +98,10 @@ using namespace std;
         }
     }
     
-    if (self.shoulRecreateDetector && !isnan(self.fillingScalar[0])) {
+    if (self.shoulRecreateDetector) {
         DetectingObject detectingObject = DetectingObject();
-        detectingObject.detectingColors = scalarsForimage(image, self.selectedPoint);
         detectingObject.fillingColor = [self fillingScalar];
+        detectingObject.detectingColors = scalarsForimage(image, self.selectedPoint);
         self.detectingObject = detectingObject;
         self.shoulRecreateDetector = false;
     }
@@ -132,8 +132,6 @@ using namespace std;
         }
     }
     
-    cvtColor(image, image, COLOR_BGRA2BGR);
-    
     if (self.detectingObject.detectingColors.size() != 0 && !isnan(self.detectingObject.fillingColor[0])) {
         bodyMat = [self.tshirtDetector fillImg:bodyMat withDetectingObject: self.detectingObject withAdditionalImage:imageMat inRect:imageFrame];
         bodyMat.copyTo(image(fullBodyRect));
@@ -148,33 +146,24 @@ vector<Scalar> scalarsForimage(Mat image, CGPoint point)  {
     int x = point.x;
     int y = point.y;
     
-    Mat hsv;
-    cvtColor(image, hsv, CV_BGRA2BGR);
-//    cvtColor(hsv, hsv, CV_BGR2HSV);
-    
     int value = 3;
     if (x <= value || y <= value) {
         return vector<Scalar>(0);
     }
     
-    Mat rect = hsv(cvRect(x - value, y - value, value * 2, value * 2));
+    Mat mat = image(cvRect(x - value, y - value, value * 2, value * 2));
     
-    UIImage* ui = [UIImage imageFromCVMat:rect];
-    
-    vector<Scalar> hsvColors(rect.rows * rect.cols);
+    vector<Scalar> scalars(mat.rows * mat.cols);
     
     int size = 0;
-    for (int i = 0; i < rect.rows; i++) {
-        for (int j = 0; j < rect.cols; j++) {
-            auto pixel = rect.at<Vec3b>(i, j);
-            hsvColors[size++] = Scalar(pixel.val[0], pixel.val[1], pixel.val[2]);
-            UIColor* uiColor1 = [UIColor colorWithRed: hsvColors[i][0]/255 green: hsvColors[i][1]/255 blue: hsvColors[i][2]/255 alpha: 1];
-            NSLog(@"");
+    for (int i = 0; i < mat.rows; i++) {
+        for (int j = 0; j < mat.cols; j++) {
+            auto pixel = mat.at<Vec3b>(i, j);
+            scalars[size++] = Scalar(pixel.val[0], pixel.val[1], pixel.val[2]);
         }
     }
     
-    
-    return hsvColors;
+    return scalars;
 }
 
 -(Scalar)averageScalarForImage:(Mat) image inPoint: (CGPoint) point {
@@ -197,8 +186,6 @@ vector<Scalar> scalarsForimage(Mat image, CGPoint point)  {
     cvtColor(bgr, bgr, CV_HSV2BGR);
     
     Scalar brgColor = Scalar(bgr.data[0], bgr.data[1], bgr.data[2]);
-    
-//    UIColor* uiColor1 = [UIColor colorWithRed:brgColor[2]/255 green:brgColor[1]/255 blue:brgColor[0]/255 alpha:1];
     
     return brgColor;
 }
@@ -247,6 +234,7 @@ vector<Scalar> scalarsForimage(Mat image, CGPoint point)  {
 
 - (void) resetFillingColor {
     self.fillingScalar = Scalar(NAN, NAN, NAN);
+    self.shoulRecreateDetector = true;
 }
 
 @end
