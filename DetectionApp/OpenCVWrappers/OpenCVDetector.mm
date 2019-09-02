@@ -259,7 +259,10 @@ vector<Scalar> scalarsForimage(Mat image, CGPoint point)  {
 }
 
 - (void) resetFillingColor {
-    self.fillingScalar = Scalar(NAN, NAN, NAN);
+    DetectingObject detectingObject = DetectingObject();
+    detectingObject.detectingColors = self.detectingObject.detectingColors;
+    detectingObject.fillingColor = Scalar(NAN, NAN, NAN);;
+    self.detectingObject = detectingObject;
 }
 
 - (UIColor*)getAvarageDetectionColor {
