@@ -80,7 +80,7 @@ class CameraViewController: UIViewController {
         tableView.isPagingEnabled = true
         tableView.contentInset = .zero
         
-        hValueSlider.value = 4
+        hValueSlider.value = 2
         sValueSlider.value = 32
         vValueSlider.value = 32
         offsetValueLabel.text = "0"

@@ -66,7 +66,7 @@
                                         <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="180" translatesAutoresizingMaskIntoConstraints="NO" id="OdX-wH-Qc7">
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="50" translatesAutoresizingMaskIntoConstraints="NO" id="OdX-wH-Qc7">
                                         <rect key="frame" x="39.5" y="16" width="124" height="31"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="120" id="9Bf-BL-clb"/>
@@ -164,7 +164,7 @@
                                     <constraint firstItem="qe9-1v-wte" firstAttribute="centerX" secondItem="umR-M9-p6g" secondAttribute="centerX" id="hnu-bg-lM5"/>
                                     <constraint firstItem="aib-74-phF" firstAttribute="centerX" secondItem="sEe-TF-I1j" secondAttribute="centerX" id="iQ1-Dg-FJ6"/>
                                     <constraint firstItem="e37-47-WrC" firstAttribute="top" secondItem="sEe-TF-I1j" secondAttribute="bottom" constant="20" id="loL-J1-6Ma"/>
-                                    <constraint firstItem="OdX-wH-Qc7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="zOd-OL-h1g" secondAttribute="trailing" symbolic="YES" id="mZb-k8-izo"/>
+                                    <constraint firstItem="OdX-wH-Qc7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="zOd-OL-h1g" secondAttribute="trailing" constant="8" symbolic="YES" id="mZb-k8-izo"/>
                                     <constraint firstItem="YYs-3Z-yEB" firstAttribute="centerY" secondItem="NMN-pb-6i9" secondAttribute="centerY" id="n62-Jv-hFp"/>
                                     <constraint firstItem="umR-M9-p6g" firstAttribute="firstBaseline" secondItem="OdX-wH-Qc7" secondAttribute="firstBaseline" id="nlp-YS-HsR"/>
                                     <constraint firstItem="dBK-1R-IXh" firstAttribute="top" secondItem="zOd-OL-h1g" secondAttribute="bottom" constant="35" id="nuh-oM-kSO"/>
