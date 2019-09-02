@@ -23,10 +23,10 @@ using namespace std;
 @property (nonatomic, strong) TShirtDetector* tshirtDetector;
 @property (nonatomic, assign) CGFloat scale;
 @property (nonatomic, assign) Scalar fillingScalar;
-@property (nonatomic, assign) bool shoulRecreateDetector;
 @property (nonatomic, assign) CGPoint selectedPoint;
 @property (nonatomic, assign) Mat additionalImage;
 @property (nonatomic, assign) DetectingObject detectingObject;
+@property (nonatomic, assign) Scalar avarageScalar;
 
 @end
 
@@ -55,7 +55,7 @@ using namespace std;
         self.bodyDetector = [[BodyDetector alloc] initWithType: BodyDetectorTypeFace];
         self.tshirtDetector = [[TShirtDetector alloc] init];
         self.fillingScalar = Scalar(NAN, NAN, NAN);
-        self.selectedPoint = CGPointZero;
+        self.selectedPoint = CGPointMake(NAN, NAN);
     }
     
     return self;
@@ -97,27 +97,39 @@ using namespace std;
                 int rows = bodyMat.rows;
                 int cols = bodyMat.cols;
                 self.selectedPoint = CGPointMake(cols/2 - 7, rows - 7);
-                self.shoulRecreateDetector = true;
             }
         }
     }
     
-    if (self.shoulRecreateDetector) {
+    if (!isnan(self.selectedPoint.x) && !isnan(self.selectedPoint.y)) {
+        
         DetectingObject detectingObject = DetectingObject();
-        detectingObject.fillingColor = [self fillingScalar];
+        detectingObject.fillingColor = self.detectingObject.fillingColor;
+        
+        self.avarageScalar = [self averageScalarForImage:image inPoint: self.selectedPoint];
+        
+//        UIColor* color = [[UIColor alloc] initWithRed: self.avarageScalar[2] / 255 green: self.avarageScalar[1] / 255 blue:self.avarageScalar[0] / 255 alpha:1.0];
         
         if (self.detectionMode == OpenCVDetectorModeAvarageScalar) {
             vector<Scalar> scalars(1);
-            scalars[0] = [self averageScalarForImage:image inPoint: self.selectedPoint];
+            scalars[0] = self.avarageScalar;
             detectingObject.detectingColors = scalars;
         } else {
-            detectingObject.detectingColors = scalarsForimage(image, self.selectedPoint);
+           detectingObject.detectingColors = scalarsForimage(image, self.selectedPoint);
         }
         
+        self.selectedPoint = CGPointMake(NAN, NAN);
         self.detectingObject = detectingObject;
-        self.shoulRecreateDetector = false;
     }
     
+    if (!isnan(self.fillingScalar[0])) {
+        DetectingObject detectingObject = DetectingObject();
+        detectingObject.detectingColors = self.detectingObject.detectingColors;
+        detectingObject.fillingColor = [self fillingScalar];
+        self.fillingScalar = Scalar(NAN, NAN, NAN);
+        self.detectingObject = detectingObject;
+    }
+
     Mat imageMat = Mat();
     CvRect imageFrame;
     
@@ -189,6 +201,8 @@ vector<Scalar> scalarsForimage(Mat image, CGPoint point)  {
     
     Mat rect = hsv(cvRect(x - 3, y - 3, 6, 6));
     
+//    UIImage* uiimage = [UIImage imageFromCVMat: image(cvRect(x - 3, y - 3, 6, 6))];
+    
     vector<Scalar> hsvColors = scalarsForimage(image, point);
     
     cv::Mat1b mask(rect.rows, rect.cols);
@@ -234,12 +248,10 @@ vector<Scalar> scalarsForimage(Mat image, CGPoint point)  {
 
 - (void)setDetectingPoint: (CGPoint) point {
     _selectedPoint = point;
-    self.shoulRecreateDetector = true;
 }
 
 - (void)setFillingColorWithRed:(double) red green:(double) green blue:(double) blue {
     self.fillingScalar = Scalar(blue, green, red);
-    self.shoulRecreateDetector = true;
 }
 
 - (void)setOffset:(float) offset {
@@ -248,7 +260,10 @@ vector<Scalar> scalarsForimage(Mat image, CGPoint point)  {
 
 - (void) resetFillingColor {
     self.fillingScalar = Scalar(NAN, NAN, NAN);
-    self.shoulRecreateDetector = true;
+}
+
+- (UIColor*)getAvarageDetectionColor {
+    return  [[UIColor alloc] initWithRed: self.avarageScalar[2] / 255 green: self.avarageScalar[1] / 255 blue:self.avarageScalar[0] / 255 alpha:1.0];
 }
 
 @end

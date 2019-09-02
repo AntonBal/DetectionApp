@@ -56,6 +56,7 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var sValueSlider: UISlider!
     @IBOutlet weak var vValueSlider: UISlider!
     @IBOutlet weak var offsetValueSlider: UISlider!
+    @IBOutlet weak var scalarView: UIView!
     
     private let CollectionTableViewCellIdentifier = "CollectionTableViewCell"
     
@@ -110,6 +111,10 @@ class CameraViewController: UIViewController {
         location.y = round((location.y * height) / viewHeight)
         
         detecor.setDetecting(location)
+        
+        DispatchQueue.main.async {
+            self.scalarView.backgroundColor = self.detecor.getAvarageDetectionColor()
+        }
     }
     
     //MARK: Actions
