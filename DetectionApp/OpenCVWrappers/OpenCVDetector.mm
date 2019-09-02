@@ -43,7 +43,7 @@ using namespace std;
         self.videoCamera.defaultFPS = 30;
         self.videoCamera.delegate = self;
         self.videoCamera.rotateVideo = NO;
-//        self.videoCamera.grayscaleMode = NO;
+        
         self.scale = scale;
         
         if (type == OpenCVDetectorTypeFront) {
@@ -65,8 +65,12 @@ using namespace std;
 
 - (void)processImage:(cv::Mat&)image {
     
-    BodyObject* bodyObject = [self.bodyDetector detecBodyForMat: image];
+    BodyObject* bodyObject;
     
+    if (self.isShouldDetectFace) {
+        bodyObject = [self.bodyDetector detecBodyForMat: image];
+    }
+   
     cv::Rect fullBodyRect = cvRect(0, 0, image.cols, image.rows);
     
     cvtColor(image, image, COLOR_BGRA2BGR);
@@ -188,13 +192,11 @@ using namespace std;
 }
 
 - (void)setImage:(UIImage*) image {
-    
     if (image) {
         _additionalImage = [image cvMatRepresentationColor];
     } else {
         _additionalImage = Mat();
     }
-    
 }
 
 - (void)startCapture {
@@ -212,6 +214,10 @@ using namespace std;
 
 - (void)setFillingColorWithRed:(double) red green:(double) green blue:(double) blue {
     self.fillingScalar = Scalar(blue, green, red);
+}
+
+- (void)setOffset:(float) offset {
+    [self.tshirtDetector setOffset: offset];
 }
 
 - (void) resetFillingColor {

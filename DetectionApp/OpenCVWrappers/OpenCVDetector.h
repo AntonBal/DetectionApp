@@ -20,9 +20,11 @@ typedef NS_OPTIONS(NSUInteger, OpenCVDetectorType) {
 @interface OpenCVDetector : NSObject
 
 @property (nonatomic, strong) UIImage* capturedImage;
+@property (nonatomic, assign) BOOL isShouldDetectFace;
 
 - (instancetype)initWithCameraView:(UIView *)view scale:(CGFloat)scale preset:(AVCaptureSessionPreset) preset type: (OpenCVDetectorType) type ;
 
+- (void)setOffset:(float) offset;
 - (void)setHSVRangeValueWithHValue:(float) h sValue:(float) s vValue:(float) v;
 - (void)startCapture;
 - (void)stopCapture;

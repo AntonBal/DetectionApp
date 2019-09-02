@@ -29,12 +29,17 @@ using namespace std;
 @property (nonatomic, assign) float hRangeValue;
 @property (nonatomic, assign) float sRangeValue;
 @property (nonatomic, assign) float vRangeValue;
+@property (nonatomic, assign) float offsetValue;
 
 @end
 
 @implementation TShirtDetector
 
 #pragma mark - Public
+
+-(void)setOffset:(float) offset {
+    self.offsetValue = offset;
+}
 
 -(void)setHSVRangeValueWithHValue:(float) h sValue:(float) s vValue:(float) v {
     self.hRangeValue = h;
@@ -106,7 +111,7 @@ using namespace std;
     // Generating the final mask
     mask1 = mask1 + mask2;
     
-    cv::Size blurSize(6,6);
+    cv::Size blurSize(8,8);
     blur(mask1, mask1, blurSize);
     threshold(mask1, mask1, 50, 255, THRESH_BINARY);
     
@@ -119,8 +124,8 @@ using namespace std;
     for (int i = 0; i < background.cols; i++) {
         for (int j = 0; j < background.rows; j++) {
             CvPoint point = cvPoint(i, j);
-            background.at<Vec3b>(point).val[1] = hsv.at<Vec3b>(point).val[1];
-            background.at<Vec3b>(point).val[2] = hsv.at<Vec3b>(point).val[2];
+            background.at<Vec3b>(point).val[1] = MIN(hsv.at<Vec3b>(point).val[1] + self.offsetValue, 255);
+            background.at<Vec3b>(point).val[2] = MIN(hsv.at<Vec3b>(point).val[2] + self.offsetValue, 255);
         }
     }
     

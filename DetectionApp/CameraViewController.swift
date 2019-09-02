@@ -51,9 +51,11 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var hValueLabel: UILabel!
     @IBOutlet weak var sValueLabel: UILabel!
     @IBOutlet weak var vValueLabel: UILabel!
+    @IBOutlet weak var offsetValueLabel: UILabel!
     @IBOutlet weak var hValueSlider: UISlider!
     @IBOutlet weak var sValueSlider: UISlider!
     @IBOutlet weak var vValueSlider: UISlider!
+    @IBOutlet weak var offsetValueSlider: UISlider!
     
     private let CollectionTableViewCellIdentifier = "CollectionTableViewCell"
     
@@ -69,7 +71,7 @@ class CameraViewController: UIViewController {
         //UIGestureRecognizer
         let gesure = UITapGestureRecognizer(target: self, action: #selector(CameraViewController.gestureAction(_:)))
         gesure.delegate = self
-        view.addGestureRecognizer(gesure)
+        cameraView.addGestureRecognizer(gesure)
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -80,6 +82,7 @@ class CameraViewController: UIViewController {
         hValueSlider.value = 4
         sValueSlider.value = 32
         vValueSlider.value = 32
+        offsetValueLabel.text = "0"
         
         hsvDidChanged()
     }
@@ -113,6 +116,16 @@ class CameraViewController: UIViewController {
    
     @IBAction func sliderValueAction(_ sender: UISlider) {
         hsvDidChanged()
+    }
+    
+    @IBAction func sliderOffsetAction(_ sender: UISlider) {
+        offsetValueLabel.text = "\(sender.value)"
+        detecor.setOffset(sender.value)
+    }
+    
+    @IBAction func detectFaceAction(_ sender: UIButton) {
+        detecor.isShouldDetectFace = !sender.isSelected
+        sender.isSelected.toggle()
     }
     
     @IBAction func cameraAction(_ sender: UIButton) {
