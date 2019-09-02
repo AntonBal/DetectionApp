@@ -36,6 +36,13 @@
                                     <action selector="detectFaceAction:" destination="V6d-Fe-ybt" eventType="touchUpInside" id="VDx-Vw-lFb"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fTy-Qb-kTa">
+                                <rect key="frame" x="8" y="127" width="143" height="30"/>
+                                <state key="normal" title="Avarage scalar mode"/>
+                                <connections>
+                                    <action selector="detectionModeAction:" destination="V6d-Fe-ybt" eventType="touchUpInside" id="xOv-wh-Sq5"/>
+                                </connections>
+                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r1a-i0-eRu">
                                 <rect key="frame" x="212" y="44.5" width="163" height="250"/>
                                 <subviews>
@@ -174,8 +181,11 @@
                             <constraint firstItem="aAV-0z-Kyz" firstAttribute="leading" secondItem="QQD-iM-Fld" secondAttribute="leading" id="G1R-3J-EHp"/>
                             <constraint firstItem="QQD-iM-Fld" firstAttribute="trailing" secondItem="aAV-0z-Kyz" secondAttribute="trailing" id="IkT-0v-XtK"/>
                             <constraint firstItem="h58-LG-sp4" firstAttribute="trailing" secondItem="QQD-iM-Fld" secondAttribute="trailing" id="MP2-fR-Eha"/>
+                            <constraint firstItem="r1a-i0-eRu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fTy-Qb-kTa" secondAttribute="trailing" constant="8" symbolic="YES" id="Mrc-Yb-iEl"/>
                             <constraint firstAttribute="bottom" secondItem="aAV-0z-Kyz" secondAttribute="bottom" id="RN4-K8-v09"/>
+                            <constraint firstItem="fTy-Qb-kTa" firstAttribute="leading" secondItem="Qrf-YL-32P" secondAttribute="leading" id="Yd8-I3-tKH"/>
                             <constraint firstItem="QQD-iM-Fld" firstAttribute="bottom" secondItem="h58-LG-sp4" secondAttribute="bottom" id="Z80-PA-w8C"/>
+                            <constraint firstItem="fTy-Qb-kTa" firstAttribute="top" secondItem="Qrf-YL-32P" secondAttribute="bottom" constant="15" id="ZI4-UQ-sIK"/>
                             <constraint firstItem="dUJ-Nr-wJa" firstAttribute="leading" secondItem="QQD-iM-Fld" secondAttribute="leading" constant="8" id="aQD-w0-xKB"/>
                             <constraint firstItem="h58-LG-sp4" firstAttribute="leading" secondItem="QQD-iM-Fld" secondAttribute="leading" id="crG-4D-Yxh"/>
                             <constraint firstAttribute="trailing" secondItem="r1a-i0-eRu" secondAttribute="trailing" id="n6a-ZY-1MH"/>

@@ -9,6 +9,9 @@
 #import "TShirtDetector.h"
 #import "UIImage+OpenCV.h"
 
+using namespace cv;
+using namespace std;
+
 struct RGBColor {
     double r;
     double g;
@@ -20,9 +23,6 @@ struct HSVColor {
     double s;
     double v;
 };
-
-using namespace cv;
-using namespace std;
 
 @interface TShirtDetector()
 
@@ -47,69 +47,26 @@ using namespace std;
     self.vRangeValue = v;
 }
 
-- (cv::Mat) fillImg:(cv::Mat&) img withColor:(cv::Scalar) fillingColor byColor:(cv::Scalar) detectingColor withAdditionalImage:(cv::Mat) addImage inRect:(CvRect) rect {
+- (cv::Mat) fillImg:(cv::Mat&) img withDetectingObject:(DetectingObject) obj withAdditionalImage:(cv::Mat) addImage inRect:(CvRect) rect {
     
-    Mat hsv;
+    Mat mask1, mask2, hsv;
     
     //Converting image from BGR to HSV color space.
     cvtColor(img, hsv, COLOR_BGR2HSV);
     
-    Scalar fillingHSVColor = [self bgrScalarToHLS: fillingColor];
-    
-    Mat mask1, mask2;
-    
-    //    inRange(hsv, Scalar(0, 120, 70), Scalar(10, 255, 255), mask1);
-    //    inRange(hsv, Scalar(170, 120, 70), Scalar(180, 255, 255), mask2);
-    
-//    UIColor* uiColor1 = [UIColor colorWithRed:detectingColor[2]/255 green:detectingColor[1]/255 blue:detectingColor[0]/255 alpha:1];
-    
-    // Creating masks to detect the upper and lower red color.
-    ///The Hue values are actually distributed over a circle (range between 0-360 degrees) but in OpenCV to fit into 8bit value the range is from 0-180.
-
-    RGBColor bgr = RGBColor();
-    
-    bgr.b = detectingColor[0];
-    bgr.g = detectingColor[1];
-    bgr.r = detectingColor[2];
-    
-    auto hlsColor = [self bgr2hsv: bgr];
-    
-    auto h = hlsColor.h;
-    auto s = hlsColor.s;
-    auto v = hlsColor.v;
-    
-    auto hMin = h - self.hRangeValue;
-    auto hMax = h + self.hRangeValue;
-    auto sMin = s - self.sRangeValue;
-    auto sMax = s + self.sRangeValue;
-    auto vMin = v - self.vRangeValue;
-    auto vMax = v + self.vRangeValue;
-    
-    if (hMin < 0) {
-        hMin = 180 + hMin;
-    }
-    
-    if (hMax > 180) {
-        hMax = 0;
-    }
-    
-    if (sMin < 0) {
-        sMin = self.sRangeValue + sMin;
-    }
-    
-    if (vMin < 0) {
-        vMin = self.vRangeValue + vMin;
-    }
-    
-    auto temp = hMin;
-    hMin = MIN(hMin, hMax);
-    hMax = MAX(temp, hMax);
-    
-    inRange(hsv, Scalar(hMin, sMin, vMin), Scalar(hMin + self.hRangeValue, MIN(sMax + self.sRangeValue, 255), MIN(vMax + self.vRangeValue, 255)), mask1);
-    inRange(hsv, Scalar(hMax, sMin, vMin), Scalar(hMax + self.hRangeValue, MIN(sMax + self.sRangeValue, 255), MIN(vMax + self.vRangeValue, 255)), mask2);
+    vector<HSVColor> detectingColors(obj.detectingColors.size());
+    Scalar fillingHSVColor = [self bgrScalarToHLS: obj.fillingColor];
+   
+    for (int i = 0; i < obj.detectingColors.size(); i++)
+        detectingColors[i] = [self bgrScalar2HSVColor: obj.detectingColors[i]];
     
     // Generating the final mask
-    mask1 = mask1 + mask2;
+    HSVColor hsvRange = HSVColor();
+    hsvRange.h = self.hRangeValue;
+    hsvRange.s = self.sRangeValue;
+    hsvRange.v = self.vRangeValue;
+    
+    mask1 = maskForImage(hsv, detectingColors, hsvRange);
     
     cv::Size blurSize(8,8);
     blur(mask1, mask1, blurSize);
@@ -156,9 +113,72 @@ using namespace std;
     return final_output;
 }
 
--(HSVColor)bgr2hsv:(RGBColor) bgr
+cv::Mat maskForImage(Mat image, vector<HSVColor> colors, HSVColor hsv) {
+
+    Mat mask;
+    
+    // Creating masks to detect the upper and lower red color.
+    ///The Hue values are actually distributed over a circle (range between 0-360 degrees) but in OpenCV to fit into 8bit value the range is from 0-180.
+    
+    for (int i = 0; i < colors.size(); i++)  {
+      
+        Mat mask1, mask2;
+        HSVColor hlsColor = colors[i];
+        
+        auto h = hlsColor.h;
+        auto s = hlsColor.s;
+        auto v = hlsColor.v;
+        
+        auto hMin = h - hsv.h;
+        auto hMax = h + hsv.h;
+        auto sMin = s - hsv.s;
+        auto sMax = s + hsv.s;
+        auto vMin = v - hsv.v;
+        auto vMax = v + hsv.v;
+        
+        if (hMin < 0) {
+            hMin = 180 + hMin;
+        }
+        
+        if (hMax > 180) {
+            hMax = 0;
+        }
+        
+        if (sMin < 0) {
+            sMin = hsv.s + sMin;
+        }
+        
+        if (vMin < 0) {
+            vMin = hsv.v + vMin;
+        }
+        
+        auto temp = hMin;
+        hMin = MIN(hMin, hMax);
+        hMax = MAX(temp, hMax);
+        
+        inRange(image, Scalar(hMin, sMin, vMin), Scalar(hMin + hsv.h, MIN(sMax + hsv.s, 255), MIN(vMax + hsv.v, 255)), mask1);
+        inRange(image, Scalar(hMax, sMin, vMin), Scalar(hMax + hsv.h, MIN(sMax + hsv.s, 255), MIN(vMax + hsv.v, 255)), mask2);
+        
+        // Generating the final mask
+        
+        if (mask.size().empty()) {
+            mask = mask1 + mask2;
+        } else {
+            mask = mask + mask1 + mask2;
+        }
+    }
+    
+    return mask;
+}
+
+-(HSVColor)bgrScalar2HSVColor:(Scalar) bgrScalar
 {
     ///https://en.wikipedia.org/wiki/HSL_and_HSV#Use_in_image_analysis
+    RGBColor bgr = RGBColor();
+    bgr.r = bgrScalar[2];
+    bgr.g = bgrScalar[1];
+    bgr.b = bgrScalar[0];
+    
     HSVColor         hsv;
     double      min, max, delta;
     

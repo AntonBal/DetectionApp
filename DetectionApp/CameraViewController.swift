@@ -134,6 +134,16 @@ class CameraViewController: UIViewController {
         detecor.setCameraType(sender.isSelected ? .front : .back)
         detecor.startCapture()
     }
+    
+    @IBAction func detectionModeAction(_ sender: UIButton) {
+        if detecor.detectionMode == .arrayScalars {
+            detecor.detectionMode = .avarageScalar
+            sender.setTitle("Avarage scalar mode", for: .normal)
+        } else {
+            detecor.detectionMode = .arrayScalars
+            sender.setTitle("Array scalars mode", for: .normal)
+        }
+    }
 }
 
 extension CameraViewController: UIGestureRecognizerDelegate {

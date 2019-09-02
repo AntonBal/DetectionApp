@@ -17,10 +17,16 @@ typedef NS_OPTIONS(NSUInteger, OpenCVDetectorType) {
     OpenCVDetectorTypeBack                  = 1 << 1
 };
 
+typedef NS_OPTIONS(NSUInteger, OpenCVDetectorMode) {
+    OpenCVDetectorModeAvarageScalar                 = 1 << 0,
+    OpenCVDetectorModeArrayScalars                 = 1 << 1
+};
+
 @interface OpenCVDetector : NSObject
 
 @property (nonatomic, strong) UIImage* capturedImage;
 @property (nonatomic, assign) BOOL isShouldDetectFace;
+@property (nonatomic, assign) OpenCVDetectorMode detectionMode;
 
 - (instancetype)initWithCameraView:(UIView *)view scale:(CGFloat)scale preset:(AVCaptureSessionPreset) preset type: (OpenCVDetectorType) type ;
 
