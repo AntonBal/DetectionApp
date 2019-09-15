@@ -9,7 +9,7 @@
 #import "OpenCVDetector.h"
 #import "UIImage+OpenCV.h"
 #import "BodyDetector.h"
-#import "TShirtDetector.h"
+#import "ObjectDetector.h"
 
 #pragma mark - OpenCVDetector
 
@@ -20,7 +20,7 @@ using namespace std;
 
 @property (nonatomic, strong) CvVideoCamera* videoCamera;
 @property (nonatomic, strong) BodyDetector* bodyDetector;
-@property (nonatomic, strong) TShirtDetector* tshirtDetector;
+@property (nonatomic, strong) ObjectDetector* objectDetector;
 @property (nonatomic, assign) CGFloat scale;
 @property (nonatomic, assign) Scalar fillingScalar;
 @property (nonatomic, assign) CGPoint selectedPoint;
@@ -42,9 +42,9 @@ using namespace std;
         self.videoCamera.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
         self.videoCamera.defaultFPS = 30;
         self.videoCamera.delegate = self;
-        self.videoCamera.rotateVideo = NO;
         
         self.scale = scale;
+        self.detectionMode = OpenCVDetectorModeAvarageScalar;
         
         if (type == OpenCVDetectorTypeFront) {
             self.videoCamera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionFront;
@@ -53,7 +53,7 @@ using namespace std;
         }
         
         self.bodyDetector = [[BodyDetector alloc] initWithType: BodyDetectorTypeFace];
-        self.tshirtDetector = [[TShirtDetector alloc] init];
+        self.objectDetector = [[ObjectDetector alloc] init];
         self.fillingScalar = Scalar(NAN, NAN, NAN);
         self.selectedPoint = CGPointMake(NAN, NAN);
     }
@@ -108,8 +108,6 @@ using namespace std;
         
         self.avarageScalar = [self averageScalarForImage:image inPoint: self.selectedPoint];
         
-//        UIColor* color = [[UIColor alloc] initWithRed: self.avarageScalar[2] / 255 green: self.avarageScalar[1] / 255 blue:self.avarageScalar[0] / 255 alpha:1.0];
-        
         if (self.detectionMode == OpenCVDetectorModeAvarageScalar) {
             vector<Scalar> scalars(1);
             scalars[0] = self.avarageScalar;
@@ -157,7 +155,7 @@ using namespace std;
     }
     
     if (self.detectingObject.detectingColors.size() != 0 && !isnan(self.detectingObject.fillingColor[0])) {
-        bodyMat = [self.tshirtDetector fillImg:bodyMat withDetectingObject: self.detectingObject withAdditionalImage:imageMat inRect:imageFrame];
+        bodyMat = [self.objectDetector fillImg:bodyMat withDetectingObject: self.detectingObject withAdditionalImage:imageMat inRect:imageFrame];
         bodyMat.copyTo(image(fullBodyRect));
     }
     
@@ -201,8 +199,6 @@ vector<Scalar> scalarsForimage(Mat image, CGPoint point)  {
     
     Mat rect = hsv(cvRect(x - 3, y - 3, 6, 6));
     
-//    UIImage* uiimage = [UIImage imageFromCVMat: image(cvRect(x - 3, y - 3, 6, 6))];
-    
     vector<Scalar> hsvColors = scalarsForimage(image, point);
     
     cv::Mat1b mask(rect.rows, rect.cols);
@@ -227,7 +223,7 @@ vector<Scalar> scalarsForimage(Mat image, CGPoint point)  {
 }
 
 -(void)setHSVRangeValueWithHValue:(float) h sValue:(float) s vValue:(float) v {
-    [self.tshirtDetector setHSVRangeValueWithHValue:h sValue:s vValue:v];
+    [self.objectDetector setHSVRangeValueWithHValue:h sValue:s vValue:v];
 }
 
 - (void)setImage:(UIImage*) image {
@@ -255,7 +251,7 @@ vector<Scalar> scalarsForimage(Mat image, CGPoint point)  {
 }
 
 - (void)setOffset:(float) offset {
-    [self.tshirtDetector setOffset: offset];
+    [self.objectDetector setOffset: offset];
 }
 
 - (void) resetFillingColor {

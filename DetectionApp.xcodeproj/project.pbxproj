@@ -11,7 +11,7 @@
 		2C5E10C7225B84690088FC4A /* ColorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5E10C6225B84690088FC4A /* ColorCollectionViewCell.swift */; };
 		2C5E10C9225B97640088FC4A /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C5E10C8225B97640088FC4A /* ImageCollectionViewCell.swift */; };
 		2C65C11C2243EFEF00E290B5 /* UIImage+Color.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C65C11B2243EFEF00E290B5 /* UIImage+Color.m */; };
-		2C6A34F2224CD21900E53B8F /* TShirtDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2C6A34F1224CD21900E53B8F /* TShirtDetector.mm */; };
+		2C6A34F2224CD21900E53B8F /* ObjectDetector.mm in Sources */ = {isa = PBXBuildFile; fileRef = 2C6A34F1224CD21900E53B8F /* ObjectDetector.mm */; };
 		2C78D5D2229E886E00DF9C6A /* CollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C78D5D0229E886E00DF9C6A /* CollectionTableViewCell.swift */; };
 		2C78D5D3229E886E00DF9C6A /* CollectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2C78D5D1229E886E00DF9C6A /* CollectionTableViewCell.xib */; };
 		6044086C2214223500099F92 /* BodyObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 6044086B2214223500099F92 /* BodyObject.m */; };
@@ -49,8 +49,8 @@
 		2C5E10C8225B97640088FC4A /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		2C65C11A2243EFEF00E290B5 /* UIImage+Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Color.h"; sourceTree = "<group>"; };
 		2C65C11B2243EFEF00E290B5 /* UIImage+Color.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Color.m"; sourceTree = "<group>"; };
-		2C6A34F0224CD21900E53B8F /* TShirtDetector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TShirtDetector.h; sourceTree = "<group>"; };
-		2C6A34F1224CD21900E53B8F /* TShirtDetector.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TShirtDetector.mm; sourceTree = "<group>"; };
+		2C6A34F0224CD21900E53B8F /* ObjectDetector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectDetector.h; sourceTree = "<group>"; };
+		2C6A34F1224CD21900E53B8F /* ObjectDetector.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ObjectDetector.mm; sourceTree = "<group>"; };
 		2C78D5D0229E886E00DF9C6A /* CollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionTableViewCell.swift; sourceTree = "<group>"; };
 		2C78D5D1229E886E00DF9C6A /* CollectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectionTableViewCell.xib; sourceTree = "<group>"; };
 		4AAC03BAE3450A0ECD6A6E94 /* Pods-DetectionApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DetectionApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DetectionApp/Pods-DetectionApp.debug.xcconfig"; sourceTree = "<group>"; };
@@ -203,8 +203,8 @@
 				6044086B2214223500099F92 /* BodyObject.m */,
 				60B1321921F0E5FA00F99AB8 /* BodyDetector.h */,
 				60B1321A21F0E5FA00F99AB8 /* BodyDetector.mm */,
-				2C6A34F0224CD21900E53B8F /* TShirtDetector.h */,
-				2C6A34F1224CD21900E53B8F /* TShirtDetector.mm */,
+				2C6A34F0224CD21900E53B8F /* ObjectDetector.h */,
+				2C6A34F1224CD21900E53B8F /* ObjectDetector.mm */,
 				608B483F21EF55A500D165CB /* OpenCVDetector.h */,
 				608B483E21EF55A500D165CB /* OpenCVDetector.mm */,
 			);
@@ -338,7 +338,7 @@
 				608B483D21EF557600D165CB /* UIImage+OpenCV.mm in Sources */,
 				60B1321B21F0E5FA00F99AB8 /* BodyDetector.mm in Sources */,
 				608B484021EF55A500D165CB /* OpenCVDetector.mm in Sources */,
-				2C6A34F2224CD21900E53B8F /* TShirtDetector.mm in Sources */,
+				2C6A34F2224CD21900E53B8F /* ObjectDetector.mm in Sources */,
 				2C1BA91E2241068900183C77 /* CameraViewController.swift in Sources */,
 				2C65C11C2243EFEF00E290B5 /* UIImage+Color.m in Sources */,
 				2C78D5D2229E886E00DF9C6A /* CollectionTableViewCell.swift in Sources */,

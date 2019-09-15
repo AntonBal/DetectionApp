@@ -1,12 +1,12 @@
 //
-//  TShirtDetector.m
+//  ObjectDetector.m
 //  DetectionApp
 //
 //  Created by Anton Bal on 3/28/19.
 //  Copyright © 2019 Anton Bal'. All rights reserved.
 //
 
-#import "TShirtDetector.h"
+#import "ObjectDetector.h"
 #import "UIImage+OpenCV.h"
 
 using namespace cv;
@@ -24,7 +24,7 @@ struct HSVColor {
     double v;
 };
 
-@interface TShirtDetector()
+@interface ObjectDetector()
 
 @property (nonatomic, assign) float hRangeValue;
 @property (nonatomic, assign) float sRangeValue;
@@ -33,7 +33,7 @@ struct HSVColor {
 
 @end
 
-@implementation TShirtDetector
+@implementation ObjectDetector
 
 #pragma mark - Public
 
@@ -95,12 +95,12 @@ struct HSVColor {
         }
     }
     
-    // creating an inverted mask to segment out the cloth from the frame
+    // creating an inverted mask to segment out the object from the frame
     bitwise_not(mask1, mask2);
      
     Mat res1, res2, final_output;
      
-    // Segmenting the cloth out of the frame using bitwise and with the inverted mask
+    // Segmenting the object out of the frame using bitwise and with the inverted mask
     bitwise_and(img, img, res1, mask2);
     
     // creating image showing static background frame pixels only for the masked region

@@ -1,5 +1,5 @@
 //
-//  TShirtDetector.h
+//  ObjectDetector.h
 //  DetectionApp
 //
 //  Created by Anton Bal on 3/28/19.
@@ -17,7 +17,7 @@ struct DetectingObject {
 };
 #endif
 
-@interface TShirtDetector : NSObject
+@interface ObjectDetector : NSObject
 
 #ifdef __cplusplus
 -(void)setOffset:(float) offset;
