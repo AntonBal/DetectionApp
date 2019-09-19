@@ -2,7 +2,7 @@
 //  ColorCollectionViewCell.swift
 //  DetectionApp
 //
-//  Created by Anton Bal on 4/8/19.
+//  Created by Anton Bal’ on 9/19/19.
 //  Copyright © 2019 Anton Bal'. All rights reserved.
 //
 
@@ -10,18 +10,35 @@ import UIKit
 
 class ColorCollectionViewCell: UICollectionViewCell {
     
-    lazy var coloredLayer: CALayer = {
-        let coloredLayer = CALayer()
-        coloredLayer.frame = bounds
-        coloredLayer.borderWidth = 3.5
-        coloredLayer.cornerRadius = bounds.width / 2
-        layer.addSublayer(coloredLayer)
-        return coloredLayer
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var colorView: UIView!
+    
+    private lazy var borderLayer: CALayer = {
+        let borderLayer = CALayer()
+        borderLayer.frame = bounds
+        borderLayer.borderWidth = 2
+        borderLayer.cornerRadius = bounds.width / 2
+        layer.addSublayer(borderLayer)
+        return borderLayer
     }()
+    
+    var color: UIColor? {
+        set {
+            colorView.backgroundColor = newValue
+            layoutIfNeeded()
+        }
+        get { return colorView.backgroundColor }
+    }
     
     override var isSelected: Bool {
         didSet {
-            coloredLayer.borderColor = isSelected ? UIColor.red.cgColor : UIColor.black.cgColor
+            imageView.image = isSelected ? UIImage(named: "icCheckmark") : nil
+            borderLayer.borderColor = isSelected ? colorView.backgroundColor?.cgColor : nil
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        colorView.layer.cornerRadius = colorView.bounds.width / 2
     }
 }

@@ -11,54 +11,27 @@ import AVFoundation
 
 class CameraViewController: UIViewController {
    
+    private let ColorCellViewIdentifier = "ColorCellViewIdentifier"
+    private let colors = [nil ,#colorLiteral(red: 0.9490196078, green: 0.1254901961, blue: 0.1254901961, alpha: 1),#colorLiteral(red: 0.9803921569, green: 0.3921568627, blue: 0, alpha: 1),#colorLiteral(red: 0.968627451, green: 0.7098039216, blue: 0, alpha: 1),#colorLiteral(red: 0.4274509804, green: 0.831372549, blue: 0, alpha: 1),#colorLiteral(red: 0.2666666667, green: 0.8431372549, blue: 0.7137254902, alpha: 1),#colorLiteral(red: 0.1960784314, green: 0.7725490196, blue: 1, alpha: 1),#colorLiteral(red: 0, green: 0.568627451, blue: 1, alpha: 1),#colorLiteral(red: 0.5759999752, green: 0.1140000001, blue: 0.4040000141, alpha: 1),#colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)]
+    
     lazy var detecor = OpenCVDetector(cameraView: cameraView, scale: 1, preset: .vga640x480, type: .back)
     
-    lazy var models: [ModelCell] = {
-        
-        let ImageCollectionViewCellIdentifier = "ImageCollectionViewCellIdentifier"
-        let ColorCollectionViewCellIdentifier = "ColorCollectionViewCellIdentifier"
-        
-        let images = [nil ,#imageLiteral(resourceName: "thshirtImage_5"), #imageLiteral(resourceName: "thshirtImage_1"), #imageLiteral(resourceName: "thshirtImage_3"), #imageLiteral(resourceName: "thshirtImage_2"), #imageLiteral(resourceName: "thshirtImage_4")]
-        let colors = [nil ,#colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1),#colorLiteral(red: 0.5725490451, green: 0, blue: 0.2313725501, alpha: 1),#colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1),#colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1),#colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1),#colorLiteral(red: 0.09019608051, green: 0, blue: 0.3019607961, alpha: 1),#colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1),#colorLiteral(red: 0.3098039329, green: 0.01568627544, blue: 0.1294117719, alpha: 1),#colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1), #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)]
-        
-        let imageModel = ModelCell(cellClass: ImageCollectionViewCell.self, identifier: ImageCollectionViewCellIdentifier, items: images,
-                                   configuration: { (cell, indexPath) in
-                                    (cell as! ImageCollectionViewCell).image = images[indexPath.row]
-        }) { (indexPath) in
-            self.detecor.setImage(images[indexPath.row])
-        }
-        
-        let colorModel = ModelCell(cellClass: ColorCollectionViewCell.self, identifier: ColorCollectionViewCellIdentifier, items: images,
-                                   configuration: { (cell, indexPath) in
-                                    (cell as! ColorCollectionViewCell).coloredLayer.backgroundColor = colors[indexPath.row]?.cgColor
-        }) { (indexPath) in
-            var red: CGFloat = 0
-            var green: CGFloat = 0
-            var blue: CGFloat = 0
-            
-            if colors[indexPath.row]?.getRed(&red, green: &green, blue: &blue, alpha: nil) == true {
-                self.detecor.setFillingColorWithRed(Double(red * 255), green: Double(green * 255), blue: Double(blue * 255))
-            } else {
-                self.detecor.resetFillingColor()
-            }
-        }
-        
-        return [colorModel, imageModel]
-    }()
+    @IBOutlet weak var collectionView: UICollectionView!
     
     @IBOutlet weak var cameraView: UIView!
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var palletButton: UIButton!
+    @IBOutlet weak var settingsButton: UIButton!
+    @IBOutlet weak var settingsBottomConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var hValueLabel: UILabel!
     @IBOutlet weak var sValueLabel: UILabel!
     @IBOutlet weak var vValueLabel: UILabel!
     @IBOutlet weak var offsetValueLabel: UILabel!
+
     @IBOutlet weak var hValueSlider: UISlider!
     @IBOutlet weak var sValueSlider: UISlider!
     @IBOutlet weak var vValueSlider: UISlider!
     @IBOutlet weak var offsetValueSlider: UISlider!
-    @IBOutlet weak var scalarView: UIView!
-    
-    private let CollectionTableViewCellIdentifier = "CollectionTableViewCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,32 +42,46 @@ class CameraViewController: UIViewController {
         
         detecor.startCapture()
         
+        collectionView.register(UINib(nibName: "ColorCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: ColorCellViewIdentifier)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.allowsMultipleSelection = false
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        collectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .left)
+        
         //UIGestureRecognizer
         let gesure = UITapGestureRecognizer(target: self, action: #selector(CameraViewController.gestureAction(_:)))
         gesure.delegate = self
         cameraView.addGestureRecognizer(gesure)
         
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(UINib(nibName: "CollectionTableViewCell", bundle: nil), forCellReuseIdentifier: CollectionTableViewCellIdentifier)
-        tableView.isPagingEnabled = true
-        tableView.contentInset = .zero
-        
         hValueSlider.value = 2
         sValueSlider.value = 32
         vValueSlider.value = 32
-        offsetValueLabel.text = "0"
+        offsetValueLabel.text = "0.00"
         
         hsvDidChanged()
     }
     
     private func hsvDidChanged() {
-        hValueLabel.text = "\(hValueSlider.value)"
-        sValueLabel.text = "\(sValueSlider.value)"
-        vValueLabel.text = "\(vValueSlider.value)"
+        hValueLabel.text = String(format: "%.2f", hValueSlider.value)
+        sValueLabel.text = String(format: "%.2f", sValueSlider.value)
+        vValueLabel.text = String(format: "%.2f", vValueSlider.value)
         detecor.setHSVRangeValueWithHValue(hValueSlider.value,
                                            sValue: sValueSlider.value,
                                            vValue: vValueSlider.value)
+    }
+    
+    private func showHideSettings() {
+    
+        if settingsButton.isSelected {
+            settingsBottomConstraint.constant = 0
+        } else {
+            settingsBottomConstraint.constant = -200
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     @objc func gestureAction(_ gesture: UITapGestureRecognizer) {
@@ -111,81 +98,81 @@ class CameraViewController: UIViewController {
         location.y = round((location.y * height) / viewHeight)
         
         detecor.setDetecting(location)
-        
-        DispatchQueue.main.async {
-            self.scalarView.backgroundColor = self.detecor.getAvarageDetectionColor()
-        }
     }
     
     //MARK: Actions
-   
+    
+    @IBAction func palletButtonAction(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        settingsButton.isSelected = !sender.isSelected
+        showHideSettings()
+    }
+    
+    @IBAction func settingsButtonAction(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        palletButton.isSelected = !sender.isSelected
+        showHideSettings()
+    }
+    
     @IBAction func sliderValueAction(_ sender: UISlider) {
         hsvDidChanged()
     }
     
     @IBAction func sliderOffsetAction(_ sender: UISlider) {
-        offsetValueLabel.text = "\(sender.value)"
+        offsetValueLabel.text = String(format: "%.2f", sender.value)
         detecor.setOffset(sender.value)
     }
-    
-    @IBAction func detectFaceAction(_ sender: UIButton) {
-        detecor.isShouldDetectFace = !sender.isSelected
-        sender.isSelected.toggle()
-    }
-    
-    @IBAction func cameraAction(_ sender: UIButton) {
-        detecor.stopCapture()
-        sender.isSelected.toggle()
-        detecor.setCameraType(sender.isSelected ? .front : .back)
-        detecor.startCapture()
-    }
-    
-    @IBAction func detectionModeAction(_ sender: UIButton) {
-        if detecor.detectionMode == .arrayScalars {
-            detecor.detectionMode = .avarageScalar
-            sender.setTitle("Avarage scalar mode", for: .normal)
-        } else {
-            detecor.detectionMode = .arrayScalars
-            sender.setTitle("Array scalars mode", for: .normal)
-        }
-    }
 }
+
+//MARK: - UIGestureRecognizerDelegate
 
 extension CameraViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        return !tableView.frame.contains(touch.location(in: view))
+        return !collectionView.frame.contains(touch.location(in: view))
     }
 }
 
-//MARK: - UITableViewDelegate
+//MARK: - UICollectionViewDelegateFlowLayout
 
-extension CameraViewController: UITableViewDelegate {
-    
+extension CameraViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let rect = collectionView.bounds.insetBy(dx: 15, dy: 15)
+        return CGSize(width: rect.height, height: rect.height)
+    }
 }
 
+//MARK: - UICollectionViewDelegate
 
-//MARK: - UITableViewDataSource
-
-extension CameraViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return models.count
-    }
+extension CameraViewController: UICollectionViewDelegate {
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableView.frame.height * 0.8
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return tableView.dequeueReusableCell(withIdentifier: CollectionTableViewCellIdentifier, for: indexPath)
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if let cell = cell as? CollectionTableViewCell {
-            cell.bind(cell: models[indexPath.row])
-            cell.collectionView.allowsMultipleSelection = false
-            cell.collectionView.contentInset = .zero
-            cell.collectionView.selectItem(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .left)
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        if let selectedItems = collectionView.indexPathsForSelectedItems?.filter({ $0.section == indexPath.section && $0.row != indexPath.row }) {
+            selectedItems.forEach { collectionView.deselectItem(at: $0, animated: false) }
+        }
+        
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        
+        if colors[indexPath.row]?.getRed(&red, green: &green, blue: &blue, alpha: nil) == true {
+            self.detecor.setFillingColorWithRed(Double(red * 255), green: Double(green * 255), blue: Double(blue * 255))
+        } else {
+            self.detecor.resetFillingColor()
         }
     }
 }
 
+//MARK: - UICollectionViewDataSource
+
+extension CameraViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return colors.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ColorCellViewIdentifier, for: indexPath)
+        (cell as? ColorCollectionViewCell)?.color = colors[indexPath.row]
+        return cell
+    }
+}
