@@ -61,7 +61,7 @@
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="50" translatesAutoresizingMaskIntoConstraints="NO" id="i1m-xe-dNb">
+                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="i1m-xe-dNb">
                                                         <rect key="frame" x="22.666666666666657" y="0.0" width="290.33333333333337" height="31"/>
                                                         <connections>
                                                             <action selector="sliderValueAction:" destination="Uts-TX-MQD" eventType="valueChanged" id="rBK-J7-XxS"/>
@@ -84,7 +84,7 @@
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="50" translatesAutoresizingMaskIntoConstraints="NO" id="9up-wN-8f7">
+                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="9up-wN-8f7">
                                                         <rect key="frame" x="21.333333333333343" y="0.0" width="291.66666666666663" height="31"/>
                                                         <connections>
                                                             <action selector="sliderValueAction:" destination="Uts-TX-MQD" eventType="valueChanged" id="bWY-2I-Y3F"/>
@@ -107,7 +107,7 @@
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="50" translatesAutoresizingMaskIntoConstraints="NO" id="pKU-ys-ooJ">
+                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="pKU-ys-ooJ">
                                                         <rect key="frame" x="22" y="0.0" width="291" height="31"/>
                                                         <connections>
                                                             <action selector="sliderValueAction:" destination="Uts-TX-MQD" eventType="valueChanged" id="TFb-MM-Jvs"/>
@@ -130,7 +130,7 @@
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="50" translatesAutoresizingMaskIntoConstraints="NO" id="r2s-Ar-DEw">
+                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="r2s-Ar-DEw">
                                                         <rect key="frame" x="75.333333333333329" y="0.0" width="237.66666666666669" height="31"/>
                                                         <connections>
                                                             <action selector="sliderOffsetAction:" destination="Uts-TX-MQD" eventType="valueChanged" id="1fe-o7-6c7"/>

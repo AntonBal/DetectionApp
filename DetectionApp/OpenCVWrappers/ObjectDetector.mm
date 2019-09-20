@@ -55,7 +55,7 @@ struct HSVColor {
     cvtColor(img, hsv, COLOR_BGR2HSV);
     
     vector<HSVColor> detectingColors(obj.detectingColors.size());
-    Scalar fillingHSVColor = [self bgrScalarToHLS: obj.fillingColor];
+    Scalar fillingHSVColor = [self bgrScalarToHSVScalar: obj.fillingColor];
    
     for (int i = 0; i < obj.detectingColors.size(); i++)
         detectingColors[i] = [self bgrScalar2HSVColor: obj.detectingColors[i]];
@@ -112,6 +112,8 @@ struct HSVColor {
 
     return final_output;
 }
+
+#pragma mark - Private
 
 cv::Mat maskForImage(Mat image, vector<HSVColor> colors, HSVColor hsv) {
 
@@ -218,9 +220,7 @@ cv::Mat maskForImage(Mat image, vector<HSVColor> colors, HSVColor hsv) {
     return hsv;
 }
 
-#pragma mark - Private
-
--(Scalar)bgrScalarToHLS:(Scalar) bgrScalar {
+-(Scalar)bgrScalarToHSVScalar:(Scalar) bgrScalar {
     Mat hsv;
     Mat bgr(1,1, CV_8UC3, bgrScalar);
     cvtColor(bgr, bgr, COLOR_BGRA2BGR);
@@ -228,45 +228,4 @@ cv::Mat maskForImage(Mat image, vector<HSVColor> colors, HSVColor hsv) {
     return Scalar(hsv.data[0], hsv.data[1], hsv.data[2]);
 }
 
-- (Mat) fillBigContourForImage:(Mat) img mask:(Mat) mask color: (Scalar) color {
-    
-    vector<vector<cv::Point>> contours;
-    vector<Vec4i> hierarchy;
-    
-    //    int value = 5;
-    /// Detect edges using canny
-    //    Canny(mask, mask, value, value*2, 3);
-    
-    /// Find contours
-    findContours(mask, contours, hierarchy, CV_RETR_EXTERNAL, CV_LINK_RUNS, cv::Point(0, 0));
-    
-    /*
-    int largest_area=0;
-    int largest_contour_index=0;
-    int largest_contour_index2=0;
-    cv::Rect bounding_rect;
-     */
-    
-    if (contours.size() > 0) {
-        
-        Mat drawing = Mat::zeros(img.size(), CV_8UC1);
-        /*
-        for( int i = 0; i< contours.size(); i++ ) // iterate through each contour.
-        {
-            double a=contourArea( contours[i],false);  //  Find the area of contour
-            if(a>largest_area){
-                largest_area=a;
-                largest_contour_index2=largest_contour_index;
-                largest_contour_index=i;                //Store the index of largest contour
-                bounding_rect = boundingRect(contours[i]);
-            }
-        }
-         */
-//        rectangle(img, bounding_rect,  Scalar(0,255,0),1, 8,0);
-        drawContours(img, contours, -1, color, CV_FILLED, LINE_AA, hierarchy);
-//        fillPoly(img, contours, color);
-    }
-    
-    return img;
-}
 @end
