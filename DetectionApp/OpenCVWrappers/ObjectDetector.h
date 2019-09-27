@@ -22,7 +22,7 @@ struct DetectingObject {
 #ifdef __cplusplus
 -(void)setOffset:(float) offset;
 -(void)setHSVRangeValueWithHValue:(float) h sValue:(float) s vValue:(float) v;
-- (cv::Mat) fillImg:(cv::Mat&) img withDetectingObject:(DetectingObject) obj withAdditionalImage:(cv::Mat) addImage inRect:(CvRect) rect;
+- (cv::Mat) fillImg:(cv::Mat&) img withDetectingObject:(DetectingObject) obj;
 #endif
 
 @end

@@ -24,7 +24,6 @@ using namespace std;
 @property (nonatomic, assign) CGFloat scale;
 @property (nonatomic, assign) Scalar fillingScalar;
 @property (nonatomic, assign) CGPoint selectedPoint;
-@property (nonatomic, assign) Mat additionalImage;
 @property (nonatomic, assign) DetectingObject detectingObject;
 @property (nonatomic, assign) Scalar avarageScalar;
 
@@ -127,35 +126,9 @@ using namespace std;
         self.fillingScalar = Scalar(NAN, NAN, NAN);
         self.detectingObject = detectingObject;
     }
-
-    Mat imageMat = Mat();
-    CvRect imageFrame;
-    
-    NSArray* shoulders = bodyObject.shoulders;
-    
-    if (shoulders.count == 2) {
-        CGPoint left = [((NSValue*) [shoulders objectAtIndex:0]) CGPointValue];
-        CGPoint right = [((NSValue*) [shoulders objectAtIndex:1]) CGPointValue];
-        
-        CGFloat shouldersWidth = (right.x - left.x) * 0.7;
-        CGFloat x = (left.x + right.x) / 2;
-        CGFloat y = 80;
-        
-        if (!self.additionalImage.size().empty() && x >= 0 && y >= 0) {
-            float imageScale = float(bodyMat.cols) / float(self.additionalImage.cols);
-            float scale = shouldersWidth / bodyMat.cols;
-            float cols = self.additionalImage.cols * scale * imageScale;
-            float rows = self.additionalImage.rows * scale * imageScale;
-            
-            resize(self.additionalImage, imageMat, cvSize(cols, rows));
-            
-            imageFrame = CvRect(x - imageMat.cols / 2, y, imageMat.cols, imageMat.rows);
-            cvtColor(imageMat, imageMat, COLOR_RGBA2BGR);
-        }
-    }
     
     if (self.detectingObject.detectingColors.size() != 0 && !isnan(self.detectingObject.fillingColor[0])) {
-        bodyMat = [self.objectDetector fillImg:bodyMat withDetectingObject: self.detectingObject withAdditionalImage:imageMat inRect:imageFrame];
+        bodyMat = [self.objectDetector fillImg:bodyMat withDetectingObject: self.detectingObject];
         bodyMat.copyTo(image(fullBodyRect));
     }
     
@@ -224,14 +197,6 @@ vector<Scalar> scalarsForimage(Mat image, CGPoint point)  {
 
 -(void)setHSVRangeValueWithHValue:(float) h sValue:(float) s vValue:(float) v {
     [self.objectDetector setHSVRangeValueWithHValue:h sValue:s vValue:v];
-}
-
-- (void)setImage:(UIImage*) image {
-    if (image) {
-        _additionalImage = [image cvMatRepresentationColor];
-    } else {
-        _additionalImage = Mat();
-    }
 }
 
 - (void)startCapture {

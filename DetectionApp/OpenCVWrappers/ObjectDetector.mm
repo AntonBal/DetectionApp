@@ -47,7 +47,7 @@ struct HSVColor {
     self.vRangeValue = v;
 }
 
-- (cv::Mat) fillImg:(cv::Mat&) img withDetectingObject:(DetectingObject) obj withAdditionalImage:(cv::Mat) addImage inRect:(CvRect) rect {
+- (cv::Mat) fillImg:(cv::Mat&) img withDetectingObject:(DetectingObject) obj {
     
     Mat mask1, mask2, hsv;
     
@@ -88,13 +88,6 @@ struct HSVColor {
     
     cvtColor(background, background, COLOR_HSV2BGR);
     
-    // Add extra image to t-shirt
-    if (!addImage.size().empty()) {
-        if (rect.x + rect.width < background.cols && rect.y + rect.height < background.rows ) {
-            addImage.copyTo(background(rect));
-        }
-    }
-    
     // creating an inverted mask to segment out the object from the frame
     bitwise_not(mask1, mask2);
      
@@ -107,7 +100,6 @@ struct HSVColor {
     bitwise_and(background, background, res2, mask1);
     
     // Generating the final augmented output.
-    // addWeighted(res1, 1, res2, 1,  0, final_output);
     cv::add(res1, res2, final_output);
 
     return final_output;

@@ -37,7 +37,6 @@ typedef NS_OPTIONS(NSUInteger, OpenCVDetectorMode) {
 - (void)setCameraType:(OpenCVDetectorType) type;
 - (void)setDetectingPoint: (CGPoint) point;
 - (void)setFillingColorWithRed:(double) red green:(double) green blue:(double) blue;
-- (void)setImage:(UIImage* _Nullable) image;
 - (void)resetFillingColor;
 - (UIColor*)getAvarageDetectionColor;
 
