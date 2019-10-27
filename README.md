@@ -1,4 +1,4 @@
-### How to use OpenCV for iOS Mobile App.
+## How to use OpenCV for iOS Mobile App.
 
 Getting Started with the OpenCV SDK
 - ###Step 1:
