@@ -173,5 +173,6 @@ cv::add(res1, res2, final_output);
 ```
 
 ### Resources :
-https://opencv.org
-https://www.learnopencv.com
+- https://opencv.org
+
+- https://www.learnopencv.com
