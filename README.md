@@ -1,7 +1,7 @@
 ## How to use OpenCV for iOS Mobile App.
 
 Getting Started with the OpenCV SDK
-- ###Step 1:
+- Step 1:
 
 First step what you need is setup opencv library to your Xcode project.
 A lot of tutorial you can find in the open spaces of the Internet.
@@ -77,16 +77,16 @@ In this case, we initialize the camera and provide the self view as a target for
 For this tutorial we will change color for some object, In my case it will red spinner.
 Red spinner are easily identifiable by their color, so they’re a good candidate for our task. 
 
-###What Are Color Spaces?
+### What Are Color Spaces?
 
 In the most common color space, RGB (Red Green Blue), colors are represented in terms of their red, green, and blue components. In more technical terms, RGB describes a color as a tuple of three components. Each component can take a value between 0 and 255, where the tuple (0, 0, 0) represents black and (255, 255, 255) represents white.
 OpenCV by default reads images in BGRA format.
 
-- ###Step 2: Red color detection.
+- Step 2: Red color detection.
 
 Since the RGB values are highly sensitive to illumination we will transform the color space of our image from RGB to HSV (Hue – Saturation – Value).
 
-####What is HSV color space?
+#### What is HSV color space?
 
 The HSV color space represents colors using three values
 
@@ -122,7 +122,7 @@ For saturation and value range I just picked up the some value. It isn’t a big
 
 Then we combine masks generated for both the red color range. It is basically doing an OR operation pixel-wise. It is a simple example of operator overloading of +.
 
-- ###Step 3: Segmenting out the detected red colored spinner.
+- Step 3: Segmenting out the detected red colored spinner.
 
 In the previous step, we generated a mask to determine the region in the frame corresponding to the detected color. We refine this mask and then use it for segmenting out the spinner from the frame. The code below illustrates how it is done.
 ```
@@ -143,7 +143,7 @@ Mat res1, res2, final_output;
 bitwise_and(img, img, res1, mask2);
 ```
 
-- ### Step 4  Create new background for our spinner.
+- Step 4  Create new background for our spinner.
 
 ```
 Mat background = Mat(hsv.rows, hsv.cols, hsv.type(), Scalar(fillingHSVColor[0], NAN, NAN));
@@ -160,7 +160,7 @@ cvtColor(background, background, COLOR_HSV2BGR);
 ```
 We create new background from our HSV image with another H-value color. And then increase S-V-value for bigger saturation and brightness our spinner.
 
-- ###Step 5: Generating the final output.
+- Step 5: Generating the final output.
 
 Finally, we replace the pixel values of the detected red color region with corresponding pixel values of the background and finally generate an augmented output. 
 To do this we use bitwise_and operation first to create an image with pixel values, corresponding to the detected region, equal to the pixel values of the background and then add the output to the image (res1) from which we had segmented out the red spinner.
@@ -172,6 +172,6 @@ bitwise_and(background, background, res2, mask1);
 cv::add(res1, res2, final_output);
 ```
 
-###Resources :
+### Resources :
 https://opencv.org
 https://www.learnopencv.com
