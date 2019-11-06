@@ -96,11 +96,6 @@ typedef cv::Point CVPoint;
     }
 }
 
-- (UIImage*) detectAndDrawImage:(UIImage*) img {
-    Mat mat = [img cvMatRepresentationColor];
-    return [UIImage imageFromCVMat: [self detectAndDraw:mat scale: 1.0]];
-}
-
 - (cv::Mat) detect:(cv::Mat) image {
     vector<cv::Rect> objects;
     
@@ -110,7 +105,7 @@ typedef cv::Point CVPoint;
     
     if (objects.size() > 0) {
         const cv::Rect rect = objects[0];
-//        rectangle(image, rect, CV_RGB(255, 0, 0));
+        rectangle(image, rect, CV_RGB(255, 0, 0));
         detected = image(rect);
     }
     
@@ -118,11 +113,6 @@ typedef cv::Point CVPoint;
 }
 
 - (BodyObject*)detecBodyForMat:(cv::Mat)img {
-//    cvtColor(img, grayMat, CV_BGR2GRAY);
-   
-    ///JUST PORTRAIT!!!!!!!!
-    
-   // cv::rotate(img, img, cv::ROTATE_90_CLOCKWISE);
     
     vector<cv::Rect> objects;
     
@@ -137,24 +127,19 @@ typedef cv::Point CVPoint;
         body.head = CGRectMake(faceRectangle.x, faceRectangle.y, faceRectangle.width, faceRectangle.height);
 
         rectangle(img, faceRectangle, CV_RGB(255, 50, 50));
-//        auto size = img.size();
-//        UIImage* image = [UIImage imageFromCVMat: img];
         
         auto y = faceRectangle.y + faceRectangle.height + faceRectangle.width / 2;
       
-        Mat drawing;// = [self contoursForImage:img mask:[self makeHandMaskFor:img]];
+        Mat drawing;
         
         bool found = false;
         
         NSMutableArray* shoulders = [[NSMutableArray alloc] init];
-     //   line(img, point1, point2, color);
         
-        /*
         // Auto find lines
-         
-         auto point1 = cvPoint(0, y);
-         auto point2 = cvPoint(INT_MAX, y);
-
+        auto point1 = cvPoint(0, y);
+        auto point2 = cvPoint(INT_MAX, y);
+        
         LineIterator it(drawing, point1, point2, 8);
         
         //Try to find intersection of a contour and line
@@ -165,7 +150,6 @@ typedef cv::Point CVPoint;
                 found = true;
             }
         }
-        */
         
         if (!found) { // If not found to calculate it
             y = MIN(y, img.rows);
@@ -178,6 +162,7 @@ typedef cv::Point CVPoint;
         
         body.shoulders = shoulders;
     }
+    
     return body;
 }
 
