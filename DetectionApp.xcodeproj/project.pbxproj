@@ -152,16 +152,12 @@
 		608B481821EF523A00D165CB /* DetectionApp */ = {
 			isa = PBXGroup;
 			children = (
-				608B482F21EF530A00D165CB /* DetectionApp-Bridging-Header.h */,
-				608B482E21EF527800D165CB /* PrefixHeader.pch */,
 				608B483921EF539800D165CB /* OpenCVWrappers */,
-				608B481921EF523A00D165CB /* AppDelegate.swift */,
+				60E2A43A23731B10002AAE5A /* Resources */,
 				2C5E10C5225B84420088FC4A /* CollectioViewCells */,
+				608B481921EF523A00D165CB /* AppDelegate.swift */,
 				2C1BA91D2241068900183C77 /* CameraViewController.swift */,
 				608B481D21EF523A00D165CB /* Main.storyboard */,
-				608B482021EF523B00D165CB /* Asset.xcassets */,
-				608B482221EF523B00D165CB /* LaunchScreen.storyboard */,
-				608B482521EF523B00D165CB /* Info.plist */,
 			);
 			path = DetectionApp;
 			sourceTree = "<group>";
@@ -192,6 +188,18 @@
 				608B483E21EF55A500D165CB /* OpenCVDetector.mm */,
 			);
 			path = OpenCVWrappers;
+			sourceTree = "<group>";
+		};
+		60E2A43A23731B10002AAE5A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				608B482021EF523B00D165CB /* Asset.xcassets */,
+				608B482221EF523B00D165CB /* LaunchScreen.storyboard */,
+				608B482521EF523B00D165CB /* Info.plist */,
+				608B482E21EF527800D165CB /* PrefixHeader.pch */,
+				608B482F21EF530A00D165CB /* DetectionApp-Bridging-Header.h */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		7C52CE7EAC27A5A628EE0793 /* Pods */ = {

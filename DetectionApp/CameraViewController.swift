@@ -9,8 +9,10 @@
 import UIKit
 import AVFoundation
 
-class CameraViewController: UIViewController {
+final class CameraViewController: UIViewController {
    
+    //MARK: - Properies
+    
     private let ColorCellViewIdentifier = "ColorCellViewIdentifier"
     private let colors = [nil ,#colorLiteral(red: 0.9490196078, green: 0.1254901961, blue: 0.1254901961, alpha: 1),#colorLiteral(red: 0.9803921569, green: 0.3921568627, blue: 0, alpha: 1),#colorLiteral(red: 0.968627451, green: 0.7098039216, blue: 0, alpha: 1),#colorLiteral(red: 0.4274509804, green: 0.831372549, blue: 0, alpha: 1),#colorLiteral(red: 0.2666666667, green: 0.8431372549, blue: 0.7137254902, alpha: 1),#colorLiteral(red: 0.1960784314, green: 0.7725490196, blue: 1, alpha: 1),#colorLiteral(red: 0, green: 0.568627451, blue: 1, alpha: 1),#colorLiteral(red: 0.5759999752, green: 0.1140000001, blue: 0.4040000141, alpha: 1),#colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)]
     private lazy var detecor = OpenCVDetector(cameraView: cameraView, scale: 1, preset: .vga640x480, type: .back)

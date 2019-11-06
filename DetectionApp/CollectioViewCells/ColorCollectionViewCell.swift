@@ -8,10 +8,14 @@
 
 import UIKit
 
-class ColorCollectionViewCell: UICollectionViewCell {
+final class ColorCollectionViewCell: UICollectionViewCell {
+    
+    //MARK: - @IBOutlet's
     
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var colorView: UIView!
+    
+    //MARK: - Properies
     
     private lazy var borderLayer: CALayer = {
         let borderLayer = CALayer()
