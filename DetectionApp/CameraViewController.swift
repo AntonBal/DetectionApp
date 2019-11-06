@@ -161,9 +161,9 @@ extension CameraViewController: UICollectionViewDelegate {
         var blue: CGFloat = 0
         
         if colors[indexPath.row]?.getRed(&red, green: &green, blue: &blue, alpha: nil) == true {
-            self.detecor.setFillingColorWithRed(Double(red * 255), green: Double(green * 255), blue: Double(blue * 255))
+            detecor.setFillingColorWithRed(Double(red * 255), green: Double(green * 255), blue: Double(blue * 255))
         } else {
-            self.detecor.resetFillingColor()
+            detecor.resetFillingColor()
         }
     }
 }

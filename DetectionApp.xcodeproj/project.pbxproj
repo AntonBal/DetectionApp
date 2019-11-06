@@ -193,11 +193,11 @@
 		60E2A43A23731B10002AAE5A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				608B482F21EF530A00D165CB /* DetectionApp-Bridging-Header.h */,
+				608B482E21EF527800D165CB /* PrefixHeader.pch */,
 				608B482021EF523B00D165CB /* Asset.xcassets */,
 				608B482221EF523B00D165CB /* LaunchScreen.storyboard */,
 				608B482521EF523B00D165CB /* Info.plist */,
-				608B482E21EF527800D165CB /* PrefixHeader.pch */,
-				608B482F21EF530A00D165CB /* DetectionApp-Bridging-Header.h */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -488,8 +488,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
 				);
-				GCC_PREFIX_HEADER = "$(SRCROOT)/DetectionApp/PrefixHeader.pch";
-				INFOPLIST_FILE = DetectionApp/Info.plist;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/DetectionApp/Resources/PrefixHeader.pch";
+				INFOPLIST_FILE = DetectionApp/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -498,7 +498,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Cleveroad.DetectionApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "DetectionApp/DetectionApp-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "DetectionApp/Resources/DetectionApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -520,8 +520,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
 				);
-				GCC_PREFIX_HEADER = "$(SRCROOT)/DetectionApp/PrefixHeader.pch";
-				INFOPLIST_FILE = DetectionApp/Info.plist;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/DetectionApp/Resources/PrefixHeader.pch";
+				INFOPLIST_FILE = DetectionApp/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -530,7 +530,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Cleveroad.DetectionApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "DetectionApp/DetectionApp-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "DetectionApp/Resources/DetectionApp-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
